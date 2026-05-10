@@ -203,13 +203,32 @@ Solaris_Ai is a **conceptual repository**: the code in `src/solaris/`
 is the wiring diagram in executable form, not a trained model. It has
 no third-party dependencies — Python 3.11+ is enough.
 
-Run the CLI demo:
+> Run everything from the **project root** (the folder that contains
+> `pyproject.toml`), not from inside `src/solaris/`.
+
+The easiest way (one-time install):
 
 ```bash
-PYTHONPATH=src python -m solaris
+pip install -e .
+solaris        # CLI demo
+solaris-web    # web UI
 ```
 
-You should see, in order:
+`pip install -e .` registers the package in editable mode and creates
+both console scripts. After that you can run `solaris` / `solaris-web`
+from anywhere. On macOS, use `pip3` instead of `pip` if needed.
+
+Or, without installing:
+
+```bash
+PYTHONPATH=src python3 -m solaris        # CLI demo
+PYTHONPATH=src python3 -m solaris.web    # web UI
+```
+
+(On Linux / Windows where `python` points at Python 3, `python` works
+too; macOS Python.org installers ship only `python3`.)
+
+The CLI demo prints, in order:
 
 1. The bus subscriptions (who-listens-to-whom — this is the topology).
 2. AION emitting an absence-Stimulus ('I exist!') after silence.
@@ -220,10 +239,10 @@ You should see, in order:
 
 ### Web UI
 
-For an interactive view of the system, run:
-
 ```bash
-PYTHONPATH=src python -m solaris.web
+solaris-web                              # if installed
+# or:
+PYTHONPATH=src python3 -m solaris.web    # without installing
 ```
 
 then open <http://127.0.0.1:8765/>. The UI is a single page that:

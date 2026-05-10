@@ -16,3 +16,7 @@ where = ["src"]
 
 [project.scripts]
 solaris = "solaris.__main__:main"
+solaris-web = "solaris.web.__main__:main"
+
+[tool.setuptools.package-data]
+"solaris.web" = ["static/*"]
