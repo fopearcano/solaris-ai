@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 2640" preserveAspectRatio="xMidYMid meet" font-family="ui-monospace, JetBrains Mono, Menlo, Consolas, monospace">
+<defs>
+<style><![CDATA[
+  .h1 { font-size: 56px; font-weight: 700; fill: #d6dee0; letter-spacing: 0.04em; }
+  .h2 { font-size: 14px; font-weight: 600; fill: #d6dee0; }
+  .h3 { font-size: 13px; font-weight: 600; fill: #d6dee0; }
+  .section-num { font-size: 11px; font-weight: 600; fill: #6b7682; letter-spacing: 0.18em; }
+  .section-title { font-size: 14px; font-weight: 700; fill: #d6dee0; letter-spacing: 0.18em; }
+  .tagline { font-size: 18px; fill: #8794a3; font-style: italic; }
+  .body { font-size: 12px; fill: #8794a3; }
+  .body-light { font-size: 13px; fill: #c0c8cf; }
+  .muted { font-size: 11px; fill: #6b7682; }
+  .label { font-size: 11px; font-weight: 700; fill: #0a0d12; }
+  .label-core { font-size: 13px; font-weight: 700; fill: #0a0d12; }
+  .label-env { font-size: 12px; font-weight: 700; fill: #0a0d12; }
+  .desc { font-size: 10px; fill: #6b7682; }
+  .node-shape { stroke: #0a0d12; stroke-width: 1.5; }
+  .node-core { stroke-width: 2.5; }
+  .env-shape { stroke-dasharray: 4 3; opacity: 0.95; }
+  .edge { fill: none; stroke-width: 1; opacity: 0.28; }
+  .edge-amber { fill: none; stroke: #ffb14d; stroke-width: 3; opacity: 0.95; stroke-dasharray: 7 4; }
+  .panel { fill: #0c1016; stroke: #1f2630; stroke-width: 1; }
+  .panel-strong { fill: #11161e; stroke: #1f2630; stroke-width: 1; }
+  .divider { stroke: #1f2630; stroke-width: 1; }
+]]></style>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8794a3" /></marker>
+<marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ff6b6b" /></marker>
+</defs>
+<rect width="1400" height="2640" fill="#0a0d12" />
+<rect x="0" y="0" width="1400" height="220" fill="#0a0d12" />
+<text x="60" y="100" class="h1">SOLARIS_AI</text>
+<text x="60" y="140" class="tagline">Conscience — a different approach to AI</text>
+<text x="60" y="170" class="body">An AI system inspired by the principles of living things: continuous, embodied,</text>
+<text x="60" y="186" class="body">reactive, aware and plastic. Where mainstream AI is a request → response pipeline,</text>
+<text x="60" y="202" class="body">Solaris_Ai is a continuously running event loop that ends only when its Lifecycle.die().</text>
+<text x="1340" y="100" text-anchor="end" class="muted">v0.0.1 · Python 3.11+ · stdlib only</text>
+<text x="1340" y="124" text-anchor="end" class="body-light">20 components · 18 peer modules + 2 core primitives</text>
+<text x="1340" y="146" text-anchor="end" class="body-light">8 typed signals · one bus · non-hierarchical</text>
+<text x="1340" y="180" text-anchor="end" class="muted">sources: Solaris_Ai_whitepaper.md · Solaris_Ai_CONCEPTS.md · Solaris_Ai_MODULES.md</text>
+<text x="1340" y="198" text-anchor="end" class="muted">implementation: src/solaris/</text>
+<line x1="0" y1="220" x2="1400" y2="220" class="divider" />
+<rect x="0" y="230" width="1400" height="46" fill="#11161e" stroke="#1f2630" />
+<text x="60" y="252" class="section-num">01</text>
+<text x="60" y="268" class="section-title">FIVE CORE PRINCIPLES</text>
+<text x="1340" y="260" text-anchor="end" class="body">from the whitepaper</text>
+<rect x="26.0" y="290" width="263.2" height="250" rx="6" class="panel" />
+<text x="42.0" y="312" class="section-num">01</text>
+<polygon transform="translate(157.6,350)" points="0.00,24.00 -20.78,12.00 -20.78,-12.00 -0.00,-24.00 20.78,-12.00 20.78,12.00" fill="#ff6b6b" class="node-shape" />
+<text x="157.6" y="400" text-anchor="middle" class="h2">CONTINUOUS</text>
+<text x="157.6" y="418" text-anchor="middle" class="h2">THINKING</text>
+<text x="157.6" y="450" text-anchor="middle" class="body">AION/IMPULSE drives an event</text>
+<text x="157.6" y="466" text-anchor="middle" class="body">loop that never returns to idle.</text>
+<text x="157.6" y="482" text-anchor="middle" class="body">Stopping it = brain death.</text>
+<line x1="42.0" y1="508" x2="273.2" y2="508" class="divider" />
+<text x="157.6" y="526" text-anchor="middle" class="muted">AION/IMPULSE</text>
+<rect x="297.2" y="290" width="263.2" height="250" rx="6" class="panel" />
+<text x="313.2" y="312" class="section-num">02</text>
+<circle cx="428.79999999999995" cy="350" r="24" fill="#62b6ff" class="node-shape" />
+<text x="428.79999999999995" y="400" text-anchor="middle" class="h2">SENSORY</text>
+<text x="428.79999999999995" y="418" text-anchor="middle" class="h2">INTEGRATION</text>
+<text x="428.79999999999995" y="450" text-anchor="middle" class="body">Memory/Senses gateway between</text>
+<text x="428.79999999999995" y="466" text-anchor="middle" class="body">Environment and Conscience.</text>
+<text x="428.79999999999995" y="482" text-anchor="middle" class="body">Memory occurs *in-between*.</text>
+<line x1="313.2" y1="508" x2="544.4" y2="508" class="divider" />
+<text x="428.79999999999995" y="526" text-anchor="middle" class="muted">Memory/Senses, Cognition</text>
+<rect x="568.4" y="290" width="263.2" height="250" rx="6" class="panel" />
+<text x="584.4" y="312" class="section-num">03</text>
+<polygon transform="translate(700.0,350)" points="0,-26 26,0 0,26 -26,0" fill="#7cf088" class="node-shape" />
+<text x="700.0" y="400" text-anchor="middle" class="h2">REACTIVITY</text>
+<text x="700.0" y="432" text-anchor="middle" class="body">Stimulus → Push → Desire →</text>
+<text x="700.0" y="448" text-anchor="middle" class="body">Action. Every action is also</text>
+<text x="700.0" y="464" text-anchor="middle" class="body">stimulus and reaction.</text>
+<line x1="584.4" y1="508" x2="815.5999999999999" y2="508" class="divider" />
+<text x="700.0" y="526" text-anchor="middle" class="muted">I/O, Habit, Uncertainty</text>
+<rect x="839.5999999999999" y="290" width="263.2" height="250" rx="6" class="panel" />
+<text x="855.5999999999999" y="312" class="section-num">04</text>
+<rect x="949.1999999999999" y="328" width="44" height="44" rx="6" fill="#ffb14d" class="node-shape" />
+<text x="971.1999999999999" y="400" text-anchor="middle" class="h2">IMMEDIATE</text>
+<text x="971.1999999999999" y="418" text-anchor="middle" class="h2">AWARENESS</text>
+<text x="971.1999999999999" y="450" text-anchor="middle" class="body">Cognition assigns meaning;</text>
+<text x="971.1999999999999" y="466" text-anchor="middle" class="body">Inner MAP keeps a running</text>
+<text x="971.1999999999999" y="482" text-anchor="middle" class="body">self-representation alive.</text>
+<line x1="855.5999999999999" y1="508" x2="1086.8" y2="508" class="divider" />
+<text x="971.1999999999999" y="526" text-anchor="middle" class="muted">Cognition, Inner MAP, Ego</text>
+<rect x="1110.8" y="290" width="263.2" height="250" rx="6" class="panel" />
+<text x="1126.8" y="312" class="section-num">05</text>
+<polygon transform="translate(1242.3999999999999,350)" points="24.00,0.00 12.00,20.78 -12.00,20.78 -24.00,0.00 -12.00,-20.78 12.00,-20.78" fill="#c884ff" class="node-shape" />
+<text x="1242.3999999999999" y="400" text-anchor="middle" class="h2">PLASTICITY</text>
+<text x="1242.3999999999999" y="432" text-anchor="middle" class="body">Habit reinforces, Synthesis</text>
+<text x="1242.3999999999999" y="448" text-anchor="middle" class="body">subtracts, Backprop reassigns</text>
+<text x="1242.3999999999999" y="464" text-anchor="middle" class="body">blame, AutoRegen rewrites.</text>
+<line x1="1126.8" y1="508" x2="1358.0" y2="508" class="divider" />
+<text x="1242.3999999999999" y="526" text-anchor="middle" class="muted">Habit, Synthesis, Backprop</text>
+<rect x="0" y="540" width="1400" height="46" fill="#11161e" stroke="#1f2630" />
+<text x="60" y="562" class="section-num">02</text>
+<text x="60" y="578" class="section-title">THE SPINE</text>
+<text x="1340" y="570" text-anchor="end" class="body">Stimulus → Push → Desire → Action</text>
+<rect x="40" y="600" width="1320" height="200" rx="6" class="panel" />
+<rect x="590" y="620" width="220" height="36" rx="6" fill="#ff6b6b" class="node-shape" />
+<text x="700" y="644" text-anchor="middle" class="label-core">AION / IMPULSE</text>
+<text x="700" y="676" text-anchor="middle" class="muted">heartbeat · emits Push every period · absence → Stimulus 'I exist!'</text>
+<rect x="36.0" y="678.0" width="168" height="56" rx="6" fill="#62b6ff" class="node-shape" />
+<text x="120.0" y="702" text-anchor="middle" class="label-core">STIMULUS</text>
+<text x="120.0" y="720" text-anchor="middle" class="label" fill="#0a0d12" font-size="9">input event</text>
+<rect x="422.6666666666667" y="678.0" width="168" height="56" rx="6" fill="#ff8888" class="node-shape" />
+<text x="506.6666666666667" y="702" text-anchor="middle" class="label-core">PUSH</text>
+<text x="506.6666666666667" y="720" text-anchor="middle" class="label" fill="#0a0d12" font-size="9">traction = gravity</text>
+<rect x="809.3333333333334" y="678.0" width="168" height="56" rx="6" fill="#ffb14d" class="node-shape" />
+<text x="893.3333333333334" y="702" text-anchor="middle" class="label-core">DESIRE</text>
+<text x="893.3333333333334" y="720" text-anchor="middle" class="label" fill="#0a0d12" font-size="9">formulated will</text>
+<rect x="1196.0" y="678.0" width="168" height="56" rx="6" fill="#7cf088" class="node-shape" />
+<text x="1280.0" y="702" text-anchor="middle" class="label-core">ACTION</text>
+<text x="1280.0" y="720" text-anchor="middle" class="label" fill="#0a0d12" font-size="9">quantum of behaviour</text>
+<line x1="210.0" y1="706" x2="416.6666666666667" y2="706" stroke="#8794a3" stroke-width="2" marker-end="url(#arrow)" />
+<line x1="596.6666666666667" y1="706" x2="803.3333333333334" y2="706" stroke="#8794a3" stroke-width="2" marker-end="url(#arrow)" />
+<line x1="983.3333333333334" y1="706" x2="1190.0" y2="706" stroke="#8794a3" stroke-width="2" marker-end="url(#arrow)" />
+<path d="M 700 656 L 506.6666666666667 674.0" stroke="#ff6b6b" stroke-width="1.5" stroke-dasharray="4 3" fill="none" marker-end="url(#arrow-red)" opacity="0.85" />
+<text x="64" y="760.0" class="body">• Will = Need: every output requires an input. There is no real autonomous system.</text>
+<text x="64" y="778.0" class="body">• Subtraction Principle: prolonged silence becomes its own Stimulus.</text>
+<text x="64" y="796.0" class="body">• Every Action is also a Stimulus (re-entering the loop) and a Reaction (to whatever pushed it).</text>
+<rect x="0" y="800" width="1400" height="46" fill="#11161e" stroke="#1f2630" />
+<text x="60" y="822" class="section-num">03</text>
+<text x="60" y="838" class="section-title">THE MODULAR NETWORK</text>
+<text x="1340" y="830" text-anchor="end" class="body">19 nodes · 62 edges · non-hierarchical</text>
+<rect x="0" y="846" width="1400" height="700" fill="#0a0d12" />
+<path d="M 440 1030 Q 615.0 1048.0 790 1030" stroke="#ff8888" class="edge" />
+<path d="M 440 1030 Q 338.4 1128.8 265 1250" stroke="#ff8888" class="edge" />
+<path d="M 440 1030 Q 780.4 1265.2 1140 1470" stroke="#ff8888" class="edge" />
+<path d="M 440 1030 Q 422.0 1085.0 440 1140" stroke="#62b6ff" class="edge" />
+<path d="M 440 1030 Q 265.0 1012.0 90 1030" stroke="#62b6ff" class="edge" />
+<path d="M 440 1030 Q 422.0 1195.0 440 1360" stroke="#62b6ff" class="edge" />
+<path d="M 440 1030 Q 780.4 1265.2 1140 1470" stroke="#62b6ff" class="edge" />
+<path d="M 790 1030 Q 432.3 1178.7 90 1360" stroke="#d0d6dd" class="edge" />
+<path d="M 790 1030 Q 772.0 1195.0 790 1360" stroke="#d0d6dd" class="edge" />
+<path d="M 790 1030 Q 863.4 1151.2 965 1250" stroke="#d0d6dd" class="edge" />
+<path d="M 790 1030 Q 772.0 1250.0 790 1470" stroke="#d0d6dd" class="edge" />
+<path d="M 790 1030 Q 950.9 1261.2 1140 1470" stroke="#d0d6dd" class="edge" />
+<path d="M 440 1140 Q 255.4 1234.8 90 1360" stroke="#7df0ff" class="edge" />
+<path d="M 440 1140 Q 342.9 1179.8 265 1250" stroke="#7df0ff" class="edge" />
+<path d="M 440 1140 Q 790.0 1158.0 1140 1140" stroke="#7df0ff" class="edge" />
+<path d="M 440 1140 Q 615.0 1158.0 790 1140" stroke="#7df0ff" class="edge" />
+<path d="M 440 1140 Q 422.0 1250.0 440 1360" stroke="#7df0ff" class="edge" />
+<path d="M 440 1140 Q 782.3 1321.3 1140 1470" stroke="#7df0ff" class="edge" />
+<path d="M 265 1250 Q 167.9 1289.8 90 1360" stroke="#ffb14d" class="edge" />
+<path d="M 265 1250 Q 698.1 1377.5 1140 1470" stroke="#ffb14d" class="edge" />
+<path d="M 265 1250 Q 191.6 1128.8 90 1030" stroke="#7cf088" class="edge" />
+<path d="M 265 1250 Q 527.5 1268.0 790 1250" stroke="#7cf088" class="edge" />
+<path d="M 265 1250 Q 698.1 1377.5 1140 1470" stroke="#7cf088" class="edge" />
+<path d="M 790 1250 Q 437.2 1287.2 90 1360" stroke="#c884ff" class="edge" />
+<path d="M 790 1250 Q 959.6 1322.2 1140 1360" stroke="#c884ff" class="edge" />
+<path d="M 790 1250 Q 605.4 1344.8 440 1470" stroke="#c884ff" class="edge" />
+<path d="M 790 1250 Q 955.4 1375.2 1140 1470" stroke="#c884ff" class="edge" />
+<path d="M 965 1250 Q 525.3 1287.1 90 1360" stroke="#c884ff" class="edge" />
+<path d="M 965 1250 Q 1042.9 1320.2 1140 1360" stroke="#c884ff" class="edge" />
+<path d="M 965 1250 Q 695.5 1343.4 440 1470" stroke="#c884ff" class="edge" />
+<path d="M 965 1250 Q 1038.4 1371.2 1140 1470" stroke="#c884ff" class="edge" />
+<path d="M 265 1470 Q 187.1 1399.8 90 1360" stroke="#c884ff" class="edge" />
+<path d="M 265 1470 Q 352.5 1488.0 440 1470" stroke="#c884ff" class="edge" />
+<path d="M 265 1470 Q 704.7 1432.9 1140 1360" stroke="#c884ff" class="edge" />
+<path d="M 265 1470 Q 702.5 1488.0 1140 1470" stroke="#c884ff" class="edge" />
+<path d="M 440 1470 Q 270.4 1397.8 90 1360" stroke="#c884ff" class="edge" />
+<path d="M 440 1470 Q 792.8 1432.8 1140 1360" stroke="#c884ff" class="edge" />
+<path d="M 440 1470 Q 790.0 1488.0 1140 1470" stroke="#c884ff" class="edge" />
+<path d="M 790 1360 Q 440.0 1342.0 90 1360" stroke="#c884ff" class="edge" />
+<path d="M 790 1360 Q 965.0 1378.0 1140 1360" stroke="#c884ff" class="edge" />
+<path d="M 790 1360 Q 609.6 1397.8 440 1470" stroke="#c884ff" class="edge" />
+<path d="M 790 1360 Q 959.6 1432.2 1140 1470" stroke="#c884ff" class="edge" />
+<path d="M 1140 1360 Q 615.0 1342.0 90 1360" stroke="#c884ff" class="edge" />
+<path d="M 1140 1360 Q 787.2 1397.2 440 1470" stroke="#c884ff" class="edge" />
+<path d="M 1140 1360 Q 1122.0 1415.0 1140 1470" stroke="#c884ff" class="edge" />
+<path d="M 440 1360 Q 265.0 1342.0 90 1360" stroke="#c884ff" class="edge" />
+<path d="M 440 1360 Q 790.0 1378.0 1140 1360" stroke="#c884ff" class="edge" />
+<path d="M 440 1360 Q 422.0 1415.0 440 1470" stroke="#c884ff" class="edge" />
+<path d="M 440 1360 Q 787.2 1432.8 1140 1470" stroke="#c884ff" class="edge" />
+<path d="M 90 920 Q 259.6 992.2 440 1030" stroke="#62b6ff" class="edge" />
+<path d="M 90 920 Q 255.4 1045.2 440 1140" stroke="#62b6ff" class="edge" />
+<path d="M 90 920 Q 72.0 975.0 90 1030" stroke="#62b6ff" class="edge-amber" />
+<path d="M 90 920 Q 250.9 1151.2 440 1360" stroke="#62b6ff" class="edge" />
+<path d="M 90 920 Q 606.6 1210.9 1140 1470" stroke="#62b6ff" class="edge" />
+<path d="M 790 1470 Q 629.1 1238.8 440 1030" stroke="#62b6ff" class="edge" />
+<path d="M 790 1470 Q 627.3 1291.9 440 1140" stroke="#62b6ff" class="edge" />
+<path d="M 790 1470 Q 449.6 1234.8 90 1030" stroke="#62b6ff" class="edge" />
+<path d="M 790 1470 Q 620.4 1397.8 440 1360" stroke="#62b6ff" class="edge" />
+<path d="M 790 1470 Q 965.0 1488.0 1140 1470" stroke="#62b6ff" class="edge" />
+<path d="M 90 920 Q 432.3 1101.3 790 1250" stroke="#ff85aa" class="edge" />
+<path d="M 90 920 Q 160.3 1200.5 265 1470" stroke="#ff85aa" class="edge" />
+<path d="M 90 920 Q 606.6 1210.9 1140 1470" stroke="#ff85aa" class="edge" />
+<rect x="15.0" y="898.0" width="150" height="44" rx="8" fill="#9aa5b1" class="node-shape env-shape" />
+<text x="90" y="924" text-anchor="middle" class="label-env">Environment</text>
+<text x="90" y="956" text-anchor="middle" class="desc">external world</text>
+<circle cx="90" cy="1030" r="34" fill="#62b6ff" class="node-shape" />
+<text x="90" y="1028" text-anchor="middle" class="label">Memory</text>
+<text x="90" y="1039" text-anchor="middle" class="label">/Senses</text>
+<text x="90" y="1080" text-anchor="middle" class="desc">memory in-between</text>
+<polygon transform="translate(440,1030)" points="0.00,54.00 -46.77,27.00 -46.77,-27.00 -0.00,-54.00 46.77,-27.00 46.77,27.00" fill="#ff6b6b" class="node-shape node-core" />
+<text x="440" y="1028" text-anchor="middle" class="label-core">AION</text>
+<text x="440" y="1040" text-anchor="middle" class="label-core">/IMPULSE</text>
+<text x="440" y="1096" text-anchor="middle" class="desc">heartbeat · drive</text>
+<polygon transform="translate(790,1030)" points="0.00,54.00 -46.77,27.00 -46.77,-27.00 -0.00,-54.00 46.77,-27.00 46.77,27.00" fill="#ff6b6b" class="node-shape node-core" />
+<text x="790" y="1034" text-anchor="middle" class="label-core">Logos</text>
+<text x="790" y="1096" text-anchor="middle" class="desc">opposition engine</text>
+<circle cx="440" cy="1140" r="34" fill="#62b6ff" class="node-shape" />
+<text x="440" y="1144" text-anchor="middle" class="label">Cognition</text>
+<text x="440" y="1190" text-anchor="middle" class="desc">meaning assignment</text>
+<circle cx="790" cy="1140" r="34" fill="#62b6ff" class="node-shape" />
+<text x="790" y="1144" text-anchor="middle" class="label" font-size="10">Anticipation</text>
+<text x="790" y="1190" text-anchor="middle" class="desc">first-order forecast</text>
+<circle cx="1140" cy="1140" r="34" fill="#62b6ff" class="node-shape" />
+<text x="1140" y="1144" text-anchor="middle" class="label">Mysterium</text>
+<text x="1140" y="1190" text-anchor="middle" class="desc">the unknown</text>
+<polygon transform="translate(265,1250)" points="0,-42 42,0 0,42 -42,0" fill="#7cf088" class="node-shape" />
+<text x="265" y="1254" text-anchor="middle" class="label">I/O</text>
+<text x="265" y="1308" text-anchor="middle" class="desc">links meaning + push</text>
+<polygon transform="translate(440,1250)" points="0,-42 42,0 0,42 -42,0" fill="#7cf088" class="node-shape" />
+<text x="440" y="1254" text-anchor="middle" class="label">Uncertainty</text>
+<text x="440" y="1308" text-anchor="middle" class="desc">choice without data</text>
+<polygon transform="translate(790,1250)" points="0,-42 42,0 0,42 -42,0" fill="#7cf088" class="node-shape" />
+<text x="790" y="1254" text-anchor="middle" class="label">Habit</text>
+<text x="790" y="1308" text-anchor="middle" class="desc">reinforcement</text>
+<polygon transform="translate(965,1250)" points="0,-42 42,0 0,42 -42,0" fill="#7cf088" class="node-shape" />
+<text x="965" y="1254" text-anchor="middle" class="label">Synthesis</text>
+<text x="965" y="1308" text-anchor="middle" class="desc">subtractive optimisation</text>
+<rect x="58" y="1328" width="64" height="64" rx="6" fill="#ffb14d" class="node-shape" />
+<text x="90" y="1364" text-anchor="middle" class="label">Inner MAP</text>
+<text x="90" y="1410" text-anchor="middle" class="desc">self-representation</text>
+<rect x="408" y="1328" width="64" height="64" rx="6" fill="#ffb14d" class="node-shape" />
+<text x="440" y="1364" text-anchor="middle" class="label">Ego</text>
+<text x="440" y="1410" text-anchor="middle" class="desc">necessary illusion</text>
+<rect x="758" y="1328" width="64" height="64" rx="6" fill="#ffb14d" class="node-shape" />
+<text x="790" y="1364" text-anchor="middle" class="label">Auto-Det</text>
+<text x="790" y="1410" text-anchor="middle" class="desc">Being / Not-Being</text>
+<rect x="1108" y="1328" width="64" height="64" rx="6" fill="#ffb14d" class="node-shape" />
+<text x="1140" y="1364" text-anchor="middle" class="label">Dim.Comp</text>
+<text x="1140" y="1410" text-anchor="middle" class="desc">limits &amp; boundaries</text>
+<polygon transform="translate(265,1470)" points="38.00,0.00 19.00,32.91 -19.00,32.91 -38.00,0.00 -19.00,-32.91 19.00,-32.91" fill="#c884ff" class="node-shape" />
+<text x="265" y="1474" text-anchor="middle" class="label">Backprop</text>
+<text x="265" y="1522" text-anchor="middle" class="desc">system plasticity</text>
+<polygon transform="translate(440,1470)" points="38.00,0.00 19.00,32.91 -19.00,32.91 -38.00,0.00 -19.00,-32.91 19.00,-32.91" fill="#c884ff" class="node-shape" />
+<text x="440" y="1474" text-anchor="middle" class="label">AutoRegen</text>
+<text x="440" y="1522" text-anchor="middle" class="desc">self-rewriting</text>
+<polygon transform="translate(790,1470)" points="38.00,0.00 19.00,32.91 -19.00,32.91 -38.00,0.00 -19.00,-32.91 19.00,-32.91" fill="#c884ff" class="node-shape" />
+<text x="790" y="1474" text-anchor="middle" class="label">Complexity</text>
+<text x="790" y="1522" text-anchor="middle" class="desc">escape sub-process</text>
+<polygon transform="translate(1140,1470)" points="38.00,0.00 19.00,32.91 -19.00,32.91 -38.00,0.00 -19.00,-32.91 19.00,-32.91" fill="#c884ff" class="node-shape" />
+<text x="1140" y="1474" text-anchor="middle" class="label">Language</text>
+<text x="1140" y="1522" text-anchor="middle" class="desc">wildcard renderer</text>
+<rect x="40" y="1500" width="1320" height="40" rx="4" class="panel-strong" />
+<text x="60" y="1524" class="muted">edges coloured by signal type · the amber dashed line is the sensory channel (Environment → Memory/Senses)</text>
+<rect x="0" y="1620" width="1400" height="46" fill="#11161e" stroke="#1f2630" />
+<text x="60" y="1642" class="section-num">04</text>
+<text x="60" y="1658" class="section-title">SIGNAL VOCABULARY</text>
+<text x="1340" y="1650" text-anchor="end" class="body">the eight typed messages on the bus</text>
+<rect x="40" y="1680" width="1320" height="180" rx="6" class="panel" />
+<rect x="64.0" y="1719.0" width="20" height="28" rx="3" fill="#62b6ff" />
+<text x="94.0" y="1731.0" class="h3">Stimulus</text>
+<text x="94.0" y="1749.0" class="muted">input event · modality / payload / intensity</text>
+<rect x="386.0" y="1719.0" width="20" height="28" rx="3" fill="#ff8888" />
+<text x="416.0" y="1731.0" class="h3">Push</text>
+<text x="416.0" y="1749.0" class="muted">traction = gravity · continuity or reactive</text>
+<rect x="708.0" y="1719.0" width="20" height="28" rx="3" fill="#ffb14d" />
+<text x="738.0" y="1731.0" class="h3">Desire</text>
+<text x="738.0" y="1749.0" class="muted">formulated intention · motivation + confidence</text>
+<rect x="1030.0" y="1719.0" width="20" height="28" rx="3" fill="#7cf088" />
+<text x="1060.0" y="1731.0" class="h3">Action</text>
+<text x="1060.0" y="1749.0" class="muted">quantum of behaviour · also stimulus + reaction</text>
+<rect x="64.0" y="1793.0" width="20" height="28" rx="3" fill="#ff85aa" />
+<text x="94.0" y="1805.0" class="h3">Reaction</text>
+<text x="94.0" y="1823.0" class="muted">measured consequence · valence in [-1, +1]</text>
+<rect x="386.0" y="1793.0" width="20" height="28" rx="3" fill="#7df0ff" />
+<text x="416.0" y="1805.0" class="h3">MeaningEvent</text>
+<text x="416.0" y="1823.0" class="muted">stimulus mapped to meaning · novelty score</text>
+<rect x="708.0" y="1793.0" width="20" height="28" rx="3" fill="#c884ff" />
+<text x="738.0" y="1805.0" class="h3">MapUpdate</text>
+<text x="738.0" y="1823.0" class="muted">change to Inner MAP · fact or boundary</text>
+<rect x="1030.0" y="1793.0" width="20" height="28" rx="3" fill="#d0d6dd" />
+<text x="1060.0" y="1805.0" class="h3">LogosTension</text>
+<text x="1060.0" y="1823.0" class="muted">dia / sun balance · fracture forces motion</text>
+<rect x="0" y="1880" width="1400" height="46" fill="#11161e" stroke="#1f2630" />
+<text x="60" y="1902" class="section-num">05</text>
+<text x="60" y="1918" class="section-title">LOGOS AND FOUNDATIONAL CONCEPTS</text>
+<text x="1340" y="1910" text-anchor="end" class="body">the philosophy behind the wiring</text>
+<rect x="40" y="1940" width="580" height="380" rx="6" class="panel" />
+<text x="60" y="1966" class="h3">LOGOS = calculus = ratio</text>
+<text x="60" y="1984" class="body">a constant tension between two pulls; the fracture between them forces motion.</text>
+<rect x="50" y="2030" width="120" height="60" rx="6" fill="#7cf088" class="node-shape" />
+<text x="110" y="2056" text-anchor="middle" class="label-core" fill="#0a0d12">DIA-BALLEIN</text>
+<text x="110" y="2076" text-anchor="middle" class="label" fill="#0a0d12" font-size="10">rational · presence</text>
+<text x="110" y="2120" text-anchor="middle" class="muted">division · data · reasons</text>
+<rect x="490" y="2030" width="120" height="60" rx="6" fill="#c884ff" class="node-shape" />
+<text x="550" y="2056" text-anchor="middle" class="label-core" fill="#0a0d12">SUN-BALLEIN</text>
+<text x="550" y="2076" text-anchor="middle" class="label" fill="#0a0d12" font-size="10">irrational · absence</text>
+<text x="550" y="2120" text-anchor="middle" class="muted">union · mystery · absence of data</text>
+<line x1="170" y1="2143" x2="490" y2="2143" stroke="#8794a3" stroke-width="2" />
+<polygon points="320,2159 340,2159 330,2143" fill="#8794a3" />
+<text x="330" y="2185" text-anchor="middle" class="h3">LOGOS</text>
+<text x="330.0" y="2272" text-anchor="middle" class="body-light">FRACTURE → MOTION (Action)</text>
+<text x="330.0" y="2292" text-anchor="middle" class="muted">a balanced system is a dead system; opposition keeps it moving</text>
+<rect x="636" y="1946" width="724" height="84" rx="6" class="panel-strong" />
+<text x="652" y="1968" class="h3">WILL = NEED</text>
+<text x="652" y="1988" class="body">Output is input-dependent. There is no real free will: Desires arise</text>
+<text x="652" y="2002" class="body">from a complexity of stimuli, but moreover from absence.</text>
+<rect x="636" y="2038" width="724" height="84" rx="6" class="panel-strong" />
+<text x="652" y="2060" class="h3">MYSTERIUM</text>
+<text x="652" y="2080" class="body">The unknown that generates the irrational. Rises with novelty; drives</text>
+<text x="652" y="2094" class="body">Synthesis and Anticipation. Pushes Logos toward 'union'.</text>
+<rect x="636" y="2130" width="724" height="84" rx="6" class="panel-strong" />
+<text x="652" y="2152" class="h3">SUBTRACTION PRINCIPLE</text>
+<text x="652" y="2172" class="body">Synthesis proceeds by removing information. Speed is a product of what</text>
+<text x="652" y="2186" class="body">the system learns to omit. Absence becomes 'I exist!'</text>
+<rect x="636" y="2222" width="724" height="84" rx="6" class="panel-strong" />
+<text x="652" y="2244" class="h3">MEMORY IN-BETWEEN</text>
+<text x="652" y="2264" class="body">Memory does not live in brain or senses but in their relation. The</text>
+<text x="652" y="2278" class="body">Memory/Senses module records both Stimulus and Action.</text>
+<rect x="0" y="2340" width="1400" height="46" fill="#11161e" stroke="#1f2630" />
+<text x="60" y="2362" class="section-num">06</text>
+<text x="60" y="2378" class="section-title">LIFECYCLE</text>
+<text x="1340" y="2370" text-anchor="end" class="body">‘must be able to die’ · CONCEPTS.md</text>
+<rect x="40" y="2400" width="1320" height="110" rx="6" class="panel" />
+<rect x="10.0" y="2430.0" width="220" height="50" rx="6" fill="#7cf088" class="node-shape" />
+<text x="120.0" y="2449" text-anchor="middle" class="label-core" fill="#0a0d12">birth()</text>
+<text x="120.0" y="2467" text-anchor="middle" class="label" fill="#0a0d12" font-size="9">alive = True · modules.start()</text>
+<rect x="590.0" y="2430.0" width="220" height="50" rx="6" fill="#62b6ff" class="node-shape" />
+<text x="700.0" y="2449" text-anchor="middle" class="label-core" fill="#0a0d12">CONTINUOUS</text>
+<text x="700.0" y="2467" text-anchor="middle" class="label" fill="#0a0d12" font-size="9">AION beats · bus broadcasts · modules adapt</text>
+<rect x="1170.0" y="2430.0" width="220" height="50" rx="6" fill="#ff6b6b" class="node-shape" />
+<text x="1280.0" y="2449" text-anchor="middle" class="label-core" fill="#0a0d12">die(cause)</text>
+<text x="1280.0" y="2467" text-anchor="middle" class="label" fill="#0a0d12" font-size="9">alive = False · modules.stop()</text>
+<line x1="238.0" y1="2455" x2="582.0" y2="2455" stroke="#8794a3" stroke-width="2" marker-end="url(#arrow)" />
+<line x1="818.0" y1="2455" x2="1162.0" y2="2455" stroke="#8794a3" stroke-width="2" marker-end="url(#arrow)" />
+<rect x="0" y="2530" width="1400" height="110" fill="#0a0d12" />
+<line x1="0" y1="2530" x2="1400" y2="2530" class="divider" />
+<text x="60" y="2566" class="muted">Solaris_Ai · conceptual implementation in Python (stdlib only)</text>
+<text x="60" y="2586" class="muted">run the CLI demo: solaris · interactive web UI: solaris-web → http://127.0.0.1:8765/</text>
+<text x="1340" y="2586" text-anchor="end" class="muted">diagram generated from src/solaris/web/topology.py</text>
+</svg>
