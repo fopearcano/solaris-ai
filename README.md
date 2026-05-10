@@ -203,7 +203,7 @@ Solaris_Ai is a **conceptual repository**: the code in `src/solaris/`
 is the wiring diagram in executable form, not a trained model. It has
 no third-party dependencies — Python 3.11+ is enough.
 
-Run the demo:
+Run the CLI demo:
 
 ```bash
 PYTHONPATH=src python -m solaris
@@ -217,6 +217,34 @@ You should see, in order:
 4. A Reaction triggering Backpropagation → Auto-Regeneration, which
    rewrites I/O Module's `action_threshold` at runtime.
 5. The final Inner MAP snapshot and a clean death.
+
+### Web UI
+
+For an interactive view of the system, run:
+
+```bash
+PYTHONPATH=src python -m solaris.web
+```
+
+then open <http://127.0.0.1:8765/>. The UI is a single page that:
+
+- Renders all 18 modules as an SVG graph, coloured by role
+  (core / perception / decision / self / adapt) and laid out
+  according to `src/solaris/web/topology.py`.
+- Streams every Bus signal over Server-Sent-Events and **pulses
+  the corresponding edge** in real time, colour-coded by signal
+  type (Stimulus, Push, Desire, Action, MeaningEvent, MapUpdate,
+  LogosTension, Reaction).
+- Shows live module state (Logos division/union/fracture,
+  Mysterium pressure, Ego strength, Habit weights, Inner MAP
+  facts, Auto-Regen rewrites, …) refreshed every 0.4 s.
+- Lets you inject Stimuli, send positive / negative Reactions to
+  the most recent Action, and trigger Lifecycle.die from the
+  browser.
+
+Like the CLI, the UI server is pure stdlib — no third-party
+dependencies (HTTP + SSE are implemented on top of
+`asyncio.start_server`).
 
 To explore further:
 

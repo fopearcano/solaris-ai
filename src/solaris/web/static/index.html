@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Solaris_Ai — Conscience</title>
+  <link rel="stylesheet" href="/app.css" />
+</head>
+<body>
+
+<header>
+  <div class="title">
+    <h1>Solaris_Ai</h1>
+    <span class="subtitle">— Conscience</span>
+  </div>
+  <div class="vitals">
+    <span>age: <strong id="vital-age">0.0s</strong></span>
+    <span id="vital-alive" class="dead">connecting…</span>
+    <span id="vital-count">0 modules</span>
+    <span id="vital-events">0 events</span>
+  </div>
+</header>
+
+<main>
+  <section class="graph-panel">
+    <svg id="graph" viewBox="0 0 1500 800" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="legend">
+      <span><i class="dot core"></i>core</span>
+      <span><i class="dot perception"></i>perception</span>
+      <span><i class="dot decision"></i>decision</span>
+      <span><i class="dot self"></i>self</span>
+      <span><i class="dot adapt"></i>adapt</span>
+      <span><i class="dot env"></i>environment</span>
+    </div>
+  </section>
+
+  <aside class="state-panel">
+    <h2>Module state</h2>
+    <div id="modules-state"></div>
+  </aside>
+</main>
+
+<section class="controls">
+  <form id="stim-form">
+    <label>payload   <input id="payload"   value="light"  /></label>
+    <label>modality  <input id="modality"  value="vision" /></label>
+    <label>intensity <input id="intensity" type="number" step="0.1" min="0" max="1" value="0.7" /></label>
+    <button type="submit">Stimulate</button>
+  </form>
+  <div class="control-group">
+    <button id="react-pos">React +0.7</button>
+    <button id="react-neg">React −0.8</button>
+  </div>
+  <button id="die" class="danger">Die</button>
+  <span class="control-hint">stimulate → push → desire → action — react to teach Habit / Backprop</span>
+</section>
+
+<section class="trace">
+  <h2>Live trace</h2>
+  <ul id="trace-log"></ul>
+</section>
+
+<script src="/app.js"></script>
+</body>
+</html>
