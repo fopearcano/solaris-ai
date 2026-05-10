@@ -18,20 +18,26 @@ Roles drive the node colour in the UI.
 from __future__ import annotations
 
 # Layout: rows top-to-bottom, columns left-to-right.
-#   row 0  drive               (AION, Logos)
-#   row 1  perception          (Memory, Cognition, Anticipation, Mysterium)
+#   row -1 environment         (special: external stimuli / reactions)
+#   row 0  intake + drive      (Memory/Senses (sensory gateway), AION, Logos)
+#   row 1  perception          (Cognition, Anticipation, Mysterium)
 #   row 2  decision            (I/O, Uncertainty, Habit, Synthesis)
 #   row 3  self                (InnerMap, Ego, AutoDet, DimComp)
 #   row 4  adaptation          (Backprop, AutoRegen, Complexity, Language)
-#   row -1 environment         (special: external stimuli/reactions)
+#
+# Memory/Senses is placed in row 0 — the same row as AION and Logos —
+# because it is the *sensory gateway* (CONCEPTS.md: 'Conscience <->
+# Sensorial Perception (senses)'). Environment sits directly above it
+# so the Environment -> MemorySenses edge is short, and the frontend
+# styles it as the primary 'sensory channel' (amber).
 
 MODULES: list[dict] = [
-    {"id": "environment",            "row": -1, "col": 3, "role": "env",        "label": "Environment"},
+    {"id": "environment",            "row": -1, "col": 0, "role": "env",        "label": "Environment"},
 
+    {"id": "memory_senses",          "row": 0,  "col": 0, "role": "perception", "label": "Memory/Senses"},
     {"id": "aion_impulse",           "row": 0,  "col": 2, "role": "core",       "label": "AION/IMPULSE"},
     {"id": "logos",                  "row": 0,  "col": 4, "role": "core",       "label": "Logos"},
 
-    {"id": "memory_senses",          "row": 1,  "col": 0, "role": "perception", "label": "Memory/Senses"},
     {"id": "cognition",              "row": 1,  "col": 2, "role": "perception", "label": "Cognition"},
     {"id": "anticipation",           "row": 1,  "col": 4, "role": "perception", "label": "Anticipation"},
     {"id": "mysterium",              "row": 1,  "col": 6, "role": "perception", "label": "Mysterium"},

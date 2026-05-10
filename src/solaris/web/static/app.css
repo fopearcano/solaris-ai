@@ -72,6 +72,42 @@ main {
   min-height: 800px;
 }
 
+.graph-controls {
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  padding: 5px 7px;
+  background: rgba(14, 18, 24, 0.92);
+  border: 1px solid #1f2630;
+  border-radius: 4px;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  font-size: 12px;
+  z-index: 2;
+}
+.graph-controls button {
+  background: #1f2530;
+  border: 1px solid #303846;
+  color: #d6dee0;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1;
+}
+.graph-controls button:hover { background: #2a313d; border-color: #3a4250; }
+.graph-controls #zoom-level {
+  color: #8794a3;
+  padding: 0 6px;
+  min-width: 42px;
+  text-align: center;
+  font-size: 11px;
+}
+
 .legend {
   position: absolute;
   top: 10px;
@@ -85,21 +121,34 @@ main {
   display: flex;
   gap: 14px;
   align-items: center;
+  z-index: 2;
 }
-.legend .dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
+.legend .shape {
+  width: 12px;
+  height: 12px;
   display: inline-block;
   margin-right: 5px;
   vertical-align: middle;
+  background: currentColor;
 }
-.legend .core       { background: #ff6b6b; }
-.legend .perception { background: #62b6ff; }
-.legend .decision   { background: #7cf088; }
-.legend .self       { background: #ffb14d; }
-.legend .adapt      { background: #c884ff; }
-.legend .env        { background: #9aa5b1; }
+.legend span:nth-child(1) { color: #ff6b6b; }   /* core */
+.legend span:nth-child(2) { color: #62b6ff; }   /* perception */
+.legend span:nth-child(3) { color: #7cf088; }   /* decision */
+.legend span:nth-child(4) { color: #ffb14d; }   /* self */
+.legend span:nth-child(5) { color: #c884ff; }   /* adapt */
+.legend span:nth-child(6) { color: #9aa5b1; }   /* env */
+.legend .shape.hex {
+  width: 14px; height: 14px;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+.legend .shape.hex-flat {
+  width: 14px; height: 12px;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+}
+.legend .shape.circle  { border-radius: 50%; }
+.legend .shape.diamond { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
+.legend .shape.square  { border-radius: 2px; }
+.legend .shape.rect    { width: 18px; height: 9px; border-radius: 2px; }
 
 .state-panel {
   padding: 14px 16px;
@@ -215,6 +264,9 @@ main {
 
 /* ---- SVG -------------------------------------------------------- */
 
+#graph { cursor: grab; }
+#graph.panning { cursor: grabbing; }
+
 .edge {
   fill: none;
   stroke: #1f2630;
@@ -226,10 +278,27 @@ main {
     stroke-width 0.15s,
     filter 0.15s;
 }
+
+/* The 'sensory channel': Environment -> Memory/Senses is shown
+   prominently at idle, in amber, because senses are the gateway
+   between Environment and Conscience (CONCEPTS.md). */
+.edge[data-from="environment"][data-to="memory_senses"] {
+  stroke: #ffb14d;
+  stroke-width: 2.4;
+  opacity: 0.9;
+  stroke-dasharray: 6 4;
+  filter: drop-shadow(0 0 3px rgba(255,177,77,.4));
+}
+.edge[data-from="environment"] {
+  stroke: #4d5562;
+  opacity: 0.6;
+}
+
 .edge.active {
   stroke: #ffffff;
   stroke-width: 2;
   opacity: 1;
+  stroke-dasharray: none;
 }
 .edge.via-Stimulus.active     { stroke: #62b6ff; filter: drop-shadow(0 0 4px rgba(98,182,255,.7)); }
 .edge.via-Push.active         { stroke: #ff8888; filter: drop-shadow(0 0 4px rgba(255,136,136,.7)); }
@@ -240,13 +309,14 @@ main {
 .edge.via-MapUpdate.active    { stroke: #c884ff; filter: drop-shadow(0 0 4px rgba(200,132,255,.7)); }
 .edge.via-LogosTension.active { stroke: #d0d6dd; filter: drop-shadow(0 0 4px rgba(208,214,221,.65)); }
 
-.node circle {
+.node .node-shape {
   stroke: #0a0d12;
   stroke-width: 2;
   transition: filter 0.15s;
 }
-.node.role-env circle { stroke-dasharray: 3 3; opacity: 0.85; }
-.node.flashing circle {
+.node.role-env .node-shape  { stroke-dasharray: 3 3; opacity: 0.9; }
+.node.role-core .node-shape { stroke-width: 3; }
+.node.flashing .node-shape {
   filter: drop-shadow(0 0 14px rgba(255,255,255,0.85));
 }
 .node text {
@@ -257,3 +327,4 @@ main {
   pointer-events: none;
   user-select: none;
 }
+.node.role-core text { font-size: 11px; }

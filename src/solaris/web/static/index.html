@@ -24,13 +24,19 @@
 <main>
   <section class="graph-panel">
     <svg id="graph" viewBox="0 0 1500 800" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="graph-controls">
+      <button id="zoom-in"    title="Zoom in (or scroll up)">+</button>
+      <button id="zoom-out"   title="Zoom out (or scroll down)">−</button>
+      <button id="zoom-reset" title="Reset view">⌂</button>
+      <span id="zoom-level">100%</span>
+    </div>
     <div class="legend">
-      <span><i class="dot core"></i>core</span>
-      <span><i class="dot perception"></i>perception</span>
-      <span><i class="dot decision"></i>decision</span>
-      <span><i class="dot self"></i>self</span>
-      <span><i class="dot adapt"></i>adapt</span>
-      <span><i class="dot env"></i>environment</span>
+      <span><i class="shape hex"></i>core</span>
+      <span><i class="shape circle"></i>perception</span>
+      <span><i class="shape diamond"></i>decision</span>
+      <span><i class="shape square"></i>self</span>
+      <span><i class="shape hex-flat"></i>adapt</span>
+      <span><i class="shape rect"></i>environment</span>
     </div>
   </section>
 
