@@ -106,46 +106,54 @@ Three structural ideas hold this together:
 
 ## Module index
 
-A working list, drawn from [`Solaris_Ai_MODULES.md`](./Solaris_Ai_MODULES.md)
-and the whitepaper. Each will eventually correspond to a Python package.
+A first conceptual implementation now lives in `src/solaris/`. Two
+primitives (in `core/`) and eighteen peer modules (in `modules/`)
+talk to each other through a typed Bus. Every signal flows through
+`Stimulus → Push → Desire → Action`, with side-streams for meaning,
+self-representation, opposition, and adaptation.
 
-**Core / drive**
-- `aion_impulse/` — continuous loop, stimulus → push → desire → action quantum
-- `core_scheduler/` — foreground / background / latent task arbitration
-- `energy_management/` — resource and "wakefulness" monitoring
+**Core (drive + calculus)**
+- `core/aion_impulse.py` — heartbeat; emits Push every period and an
+  absence-Stimulus ('I exist!') after silence (Subtraction Principle).
+- `core/logos.py` — opposition engine; tracks dia-ballein (division /
+  presence) vs sun-ballein (union / absence). Fracture forces motion.
 
-**Sensory / embodiment**
-- `sensory_input/` — modality plugins (vision, audio, tactile, text, …)
-- `embodiment/` — body interface (simulated or hardware)
-- `feedback/` — sensory-to-actionable conversion
+**Self / boundaries**
+- `modules/inner_map.py` — running self-model (facts + boundaries).
+- `modules/ego.py` — the necessary illusion; strengthened by absence.
+- `modules/auto_determination.py` — Being / Not-Being opposition.
+- `modules/dimensional_comparison.py` — hard limits + soft boundaries.
 
-**Reactivity / cognition**
-- `reactivity_engine/` — stimulus → response with context
-- `emotional_layer/` — modulation by mood / history
-- `context_awareness/` — situational framing
+**Perception / cognition**
+- `modules/memory_senses.py` — memory in-between Stimulus and Action.
+- `modules/cognition.py` — meaning assignment with novelty score.
+- `modules/language.py` — wildcard renderer; cross-function trace.
 
-**Awareness / meaning**
-- `cognition_core/` — meaning assignment, knowledge linking
-- `inner_map/` — self-representation and boundaries
-- `knowledge_embedding/` — integration into existing structure
+**Drive / decision**
+- `modules/io_module.py` — links MeaningEvent + Push into Desire,
+  commits to Action above threshold (Will ≠ Action).
+- `modules/uncertainty.py` — biased random resolver; widens with
+  Mysterium pressure.
 
-**Plasticity / adaptation**
-- `plasticity_engine/` — architectural rewrite primitives
-- `reinforcement/` — habit formation
-- `synthesis/` — subtractive optimisation (the `--` operator)
+**Adaptation**
+- `modules/habit.py` — per-meaning reinforcement weights.
+- `modules/synthesis.py` — subtractive optimisation; prunes weights,
+  contributes to Logos.union (produces the Irrational).
+- `modules/backpropagation.py` — system-level plasticity; assigns
+  blame across the recent trace on negative Reactions.
+- `modules/auto_regeneration.py` — rewrites rewriteable parameters
+  from Backpropagation adjustments.
 
-**Cross-cutting**
-- `language/` — inter-module + external communication
-- `memory/` — "in-between" state linking brain-like compute to senses
-- `auto_determination/` — being / not-being opposition driver
-- `auto_regeneration/` — self-rewriting code paths
-- `complexity/` — instability + escape sub-process
-- `dimensional_comparison/` — limits & boundary perception
-- `uncertainty/` — choice under unknown distributions
+**Tension / unknown**
+- `modules/mysterium.py` — the unknown; rises with novelty, decays.
+- `modules/anticipation.py` — first-order forecaster; hits feed
+  Logos.division, misses feed Mysterium.
+- `modules/complexity.py` — Escape sub-process; emits B+/- pair when
+  Logos fracture stays low (Esc = B+/-).
 
 ---
 
-## Suggested project layout (Python)
+## Project layout
 
 ```
 solaris-ai/
@@ -155,62 +163,93 @@ solaris-ai/
 ├── Solaris_Ai_CONCEPTS.md
 ├── Solaris_Ai_MODULES.md
 ├── pyproject.toml
-├── src/
-│   └── solaris/
-│       ├── __init__.py
-│       ├── aion_impulse/
-│       ├── core_scheduler/
-│       ├── sensory_input/
-│       ├── embodiment/
-│       ├── reactivity_engine/
-│       ├── emotional_layer/
-│       ├── cognition_core/
-│       ├── inner_map/
-│       ├── plasticity_engine/
-│       ├── synthesis/
-│       ├── memory/
-│       ├── language/
-│       └── ...
-└── tests/
+└── src/
+    └── solaris/
+        ├── __init__.py
+        ├── __main__.py            # demo runner
+        ├── conscience.py          # the assembly + wiring diagram
+        ├── runtime/
+        │   ├── bus.py             # typed pub/sub
+        │   ├── lifecycle.py       # birth / death
+        │   └── signals.py         # Stimulus, Push, Desire, Action, …
+        ├── core/
+        │   ├── aion_impulse.py
+        │   └── logos.py
+        └── modules/
+            ├── base.py
+            ├── memory_senses.py
+            ├── inner_map.py
+            ├── cognition.py
+            ├── ego.py
+            ├── auto_determination.py
+            ├── dimensional_comparison.py
+            ├── language.py
+            ├── io_module.py
+            ├── uncertainty.py
+            ├── habit.py
+            ├── synthesis.py
+            ├── backpropagation.py
+            ├── auto_regeneration.py
+            ├── complexity.py
+            ├── mysterium.py
+            └── anticipation.py
 ```
-
-Nothing under `src/` exists yet — building it out is exactly what the
-[ROADMAP](./ROADMAP.md) is for.
 
 ---
 
 ## Getting started
 
-Solaris_Ai is, at this stage, a **conceptual repository**. There is no
-runnable code in the tree. Contributors and readers are expected to:
+Solaris_Ai is a **conceptual repository**: the code in `src/solaris/`
+is the wiring diagram in executable form, not a trained model. It has
+no third-party dependencies — Python 3.11+ is enough.
+
+Run the demo:
+
+```bash
+PYTHONPATH=src python -m solaris
+```
+
+You should see, in order:
+
+1. The bus subscriptions (who-listens-to-whom — this is the topology).
+2. AION emitting an absence-Stimulus ('I exist!') after silence.
+3. External Stimuli flowing through Cognition → I/O → Action.
+4. A Reaction triggering Backpropagation → Auto-Regeneration, which
+   rewrites I/O Module's `action_threshold` at runtime.
+5. The final Inner MAP snapshot and a clean death.
+
+To explore further:
 
 1. Read [`Solaris_Ai_whitepaper.md`](./Solaris_Ai_whitepaper.md) for the
    architecture and the 2-year vision.
 2. Read [`Solaris_Ai_CONCEPTS.md`](./Solaris_Ai_CONCEPTS.md) for the
-   philosophical axioms the architecture is meant to encode.
-3. Read [`Solaris_Ai_MODULES.md`](./Solaris_Ai_MODULES.md) for the working
-   list of modules.
-4. Consult [`ROADMAP.md`](./ROADMAP.md) for the phased Python implementation
-   plan and pick a module / phase to prototype.
-
-When the first prototypes land, this section will be replaced with real
-install / run instructions.
+   philosophical axioms the code encodes.
+3. Read [`Solaris_Ai_MODULES.md`](./Solaris_Ai_MODULES.md) for the
+   module index.
+4. Open [`src/solaris/conscience.py`](./src/solaris/conscience.py) —
+   its docstring is the publish/subscribe map between every module.
+5. Consult [`ROADMAP.md`](./ROADMAP.md) for the phased plan: this
+   first conceptual system is roughly Phase 0 + an opinionated
+   sketch of Phases 1, 4, 5 and 7.
 
 ---
 
 ## Status
 
-- [x] Whitepaper
-- [x] Concepts notes
-- [x] Module index
+- [x] Whitepaper, Concepts notes, Module index
 - [x] README and roadmap
-- [ ] Repository scaffolding (`pyproject.toml`, `src/solaris/`)
-- [ ] AION/IMPULSE prototype
-- [ ] First end-to-end stimulus → reaction demo
-- [ ] Inner MAP prototype
-- [ ] Plasticity engine prototype
+- [x] Repository scaffolding (`pyproject.toml`, `src/solaris/`)
+- [x] Runtime primitives (Bus, Lifecycle, typed Signals)
+- [x] AION/IMPULSE + Logos cores
+- [x] All 18 peer modules (12 from `MODULES.md` + 6 added from `CONCEPTS.md`)
+- [x] First end-to-end stimulus → reaction demo
+- [ ] Sensory plugins (vision, audio, real input streams)
+- [ ] Embodiment interface (simulated body)
+- [ ] Long-running soak test + persisted Inner MAP
+- [ ] Real-world pilot deployment
 
-See [ROADMAP.md](./ROADMAP.md) for what each of those means in detail.
+See [ROADMAP.md](./ROADMAP.md) for the phased plan around the remaining
+items.
 
 ---
 
