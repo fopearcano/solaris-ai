@@ -206,6 +206,9 @@ no third-party dependencies — Python 3.11+ is enough.
 > Run everything from the **project root** (the folder that contains
 > `pyproject.toml`), not from inside `src/solaris/`.
 
+For the full walkthrough — venv, platform notes, troubleshooting —
+see **[SETUP.md](./SETUP.md)**.
+
 The easiest way (one-time install):
 
 ```bash
