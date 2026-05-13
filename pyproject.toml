@@ -1,0 +1,22 @@
+[project]
+name = "solaris"
+version = "0.0.1"
+description = "Solaris_Ai — a conceptual AI system of Conscience"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Solaris_Ai" }]
+dependencies = []
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.scripts]
+solaris = "solaris.__main__:main"
+solaris-web = "solaris.web.__main__:main"
+
+[tool.setuptools.package-data]
+"solaris.web" = ["static/*"]
