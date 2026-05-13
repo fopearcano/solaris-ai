@@ -18,9 +18,14 @@ properties:
 2. Push. Each heartbeat emits a small continuity-Push. Strong
    external Stimuli additionally produce a reactive Push,
    proportional to their intensity.
-3. Subtraction Principle. After a configurable silence window, AION
-   generates a Stimulus from the absence itself: 'I exist!' This is
-   the only path the system has to itself.
+3. Subtraction Principle (the MAIN STIMULUS for the human-like
+   Conscience). After a configurable silence window, AION generates
+   a Stimulus from the absence itself: 'I exist!'. Per CONCEPTS.md,
+   the distinguishing trait of post-paleorevolution man's mind is
+   precisely this — absence of data transfers into need, and need
+   into search. In animals it does not. This module is therefore
+   both the heartbeat AND the seed of every search the system
+   performs.
 
 It does not assign meaning, decide, or commit. Those belong to
 Cognition, I/O, and the Lifecycle respectively.

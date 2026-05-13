@@ -25,7 +25,7 @@ from solaris.web.topology import EDGES, MODULES  # noqa: E402
 
 # ---------------------------------------------------------------------- constants
 
-W, H = 1400, 2640
+W, H = 1400, 2870
 
 BG            = "#0a0d12"
 SECTION_BG    = "#0c1016"
@@ -55,11 +55,64 @@ SIGNAL_COLORS = {
     "LogosTension": "#d0d6dd",
 }
 
-# Module graph layout inside the architecture section.
-MOD_X0      = 90
-MOD_Y0      = 920    # absolute SVG y for row -1
-MOD_COL_W   = 175
-MOD_ROW_H   = 110
+# Schematic-specific layout for the architecture section. The web UI
+# uses a row/col grid (topology.py); the schematic uses an
+# anchored layout where AION/IMPULSE sits centrally with everything
+# else organised around it — to make the user's mental model
+# ("everything is driven by the Core") visually unambiguous.
+SCHEMATIC_POSITIONS: dict[str, tuple[float, float]] = {
+    # Top: external world.
+    "environment":            (700, 970),
+    # Sensory in.
+    "memory_senses":          (700, 1080),
+    "anticipation":           (430, 1145),
+    "mysterium":              (970, 1145),
+    # Meaning.
+    "cognition":              (700, 1210),
+    # CORE.
+    "aion_impulse":           (570, 1350),
+    "logos":                  (830, 1350),
+    # Decision row (driven by Push).
+    "uncertainty":            (560, 1500),
+    "io_module":              (700, 1500),
+    "habit":                  (840, 1500),
+    "synthesis":              (1000, 1500),
+    # Self column (left).
+    "inner_map":              (180, 1160),
+    "ego":                    (180, 1270),
+    "auto_determination":     (180, 1380),
+    "dimensional_comparison": (180, 1490),
+    # Adaptation row (bottom).
+    "backpropagation":        (440, 1620),
+    "auto_regeneration":      (590, 1620),
+    "complexity":             (770, 1620),
+    "language":               (940, 1620),
+}
+
+
+# Highlighted flows: the architectural narrative the diagram tells.
+# (from_id, to_id, color, label, dashed)
+HIGHLIGHTED_FLOWS = [
+    ("environment",       "memory_senses",     "#ffb14d", "sensory channel",    True),
+    ("memory_senses",     "cognition",         "#7df0ff", "perception",         False),
+    ("cognition",         "io_module",         "#62b6ff", "meaning",            False),
+    ("aion_impulse",      "logos",             "#ff8888", "calculus",           False),
+    ("aion_impulse",      "io_module",         "#ff5d5d", "PUSH",               False),
+    ("io_module",         "habit",             "#7cf088", "action",             False),
+    ("auto_regeneration", "io_module",         "#c884ff", "self-rewrite",       True),
+]
+HIGHLIGHTED_PAIRS = {(f, t) for f, t, *_ in HIGHLIGHTED_FLOWS}
+
+
+# Per-role description offset below the shape (for the schematic only).
+SCHEMATIC_DESC_OFFSET = {
+    "core":       102,
+    "perception": 56,
+    "decision":   58,
+    "self":       50,
+    "adapt":      52,
+    "env":        38,
+}
 
 # One-line description per module.
 MODULE_DESC = {
@@ -96,11 +149,14 @@ def hex_points(r: float, pointy: bool = True) -> str:
     return " ".join(pts)
 
 
-def node_shape(role: str, cx: float, cy: float, fill: str) -> str:
+def node_shape(role: str, cx: float, cy: float, fill: str, mod_id: str = "") -> str:
     if role == "core":
+        # AION/IMPULSE is the heartbeat — visually dominant.
+        # Logos is the paired calculus, slightly smaller.
+        r = 80 if mod_id == "aion_impulse" else 60
         return (
             f'<polygon transform="translate({cx},{cy})" '
-            f'points="{hex_points(54, True)}" fill="{fill}" '
+            f'points="{hex_points(r, True)}" fill="{fill}" '
             f'class="node-shape node-core" />'
         )
     if role == "self":
@@ -110,7 +166,8 @@ def node_shape(role: str, cx: float, cy: float, fill: str) -> str:
             f'rx="6" fill="{fill}" class="node-shape" />'
         )
     if role == "decision":
-        r = 42
+        # I/O is the central action node — bigger than its modulators.
+        r = 46 if mod_id == "io_module" else 38
         return (
             f'<polygon transform="translate({cx},{cy})" '
             f'points="0,{-r} {r},0 0,{r} {-r},0" fill="{fill}" '
@@ -119,19 +176,18 @@ def node_shape(role: str, cx: float, cy: float, fill: str) -> str:
     if role == "adapt":
         return (
             f'<polygon transform="translate({cx},{cy})" '
-            f'points="{hex_points(38, False)}" fill="{fill}" '
+            f'points="{hex_points(36, False)}" fill="{fill}" '
             f'class="node-shape" />'
         )
     if role == "env":
-        w, h = 150, 44
+        w, h = 170, 50
         return (
             f'<rect x="{cx - w / 2}" y="{cy - h / 2}" width="{w}" height="{h}" '
-            f'rx="8" fill="{fill}" class="node-shape env-shape" />'
+            f'rx="10" fill="{fill}" class="node-shape env-shape" />'
         )
-    return (
-        f'<circle cx="{cx}" cy="{cy}" r="34" fill="{fill}" '
-        f'class="node-shape" />'
-    )
+    # perception circle. Memory/Senses is the sensory gateway, bigger.
+    r = 42 if mod_id == "memory_senses" else 34
+    return f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="{fill}" class="node-shape" />'
 
 
 def render_label(role: str, label: str, x: float, y: float) -> str:
@@ -144,8 +200,8 @@ def render_label(role: str, label: str, x: float, y: float) -> str:
         a, b = label.split("/", 1)
         line_h = 12 if role == "core" else 11
         return (
-            f'<text x="{x}" y="{y - 2}" text-anchor="middle" class="{cls}">{a}</text>\n'
-            f'<text x="{x}" y="{y - 2 + line_h}" text-anchor="middle" class="{cls}">/{b}</text>'
+            f'<text x="{x}" y="{y - 2}" text-anchor="middle" class="{cls}">{a}/</text>\n'
+            f'<text x="{x}" y="{y - 2 + line_h}" text-anchor="middle" class="{cls}">{b}</text>'
         )
     # Auto-shrink long labels in tight shapes (perception circle).
     extra = ""
@@ -158,10 +214,7 @@ def render_label(role: str, label: str, x: float, y: float) -> str:
 
 
 def mod_xy(m: dict) -> tuple[float, float]:
-    return (
-        MOD_X0 + m["col"] * MOD_COL_W,
-        MOD_Y0 + (m["row"] + 1) * MOD_ROW_H,
-    )
+    return SCHEMATIC_POSITIONS[m["id"]]
 
 
 def edge_path(x1, y1, x2, y2, bend=18):
@@ -480,71 +533,134 @@ def section_spine() -> str:
     return "\n".join(out)
 
 
+def absence_banner(y: float) -> str:
+    """Banner — ABSENCE OF DATA as the main human stimulus."""
+    h = 76
+    out = [
+        f'<rect x="40" y="{y}" width="{W - 80}" height="{h}" '
+        f'rx="6" fill="#1a1410" stroke="#ffb14d" stroke-width="1.5" />',
+        f'<rect x="40" y="{y}" width="6" height="{h}" fill="#ffb14d" />',
+        f'<text x="64" y="{y + 24}" class="section-num" fill="#ffb14d">'
+        f"MAIN STIMULUS · POST-PALEOREVOLUTION"
+        f"</text>",
+        f'<text x="64" y="{y + 46}" class="h2" fill="{TXT_PRIMARY}">'
+        f"ABSENCE OF DATA → SEARCHES AND RESOLUTIONS"
+        f"</text>",
+        f'<text x="64" y="{y + 66}" class="body">'
+        f"For animals, absence does not transfer to need. For the human-like Conscience, "
+        f"AION emits a Stimulus from the absence itself: ‘I exist!’ — the seed of every search."
+        f"</text>",
+    ]
+    return "\n".join(out)
+
+
 def section_architecture() -> str:
-    """Section 03 — full module graph."""
+    """Section 03 — the modular network, anchored on the Core."""
     y0 = 800
     out = [section_title(y0, "03", "THE MODULAR NETWORK",
-                         "19 nodes · 62 edges · non-hierarchical")]
+                         "anchored on the Core · driven by the heartbeat")]
     # Section background
     out.append(
-        f'<rect x="0" y="{y0 + 46}" width="{W}" height="700" fill="{BG}" />'
+        f'<rect x="0" y="{y0 + 46}" width="{W}" height="920" fill="{BG}" />'
     )
 
-    # Index modules.
-    mods = {m["id"]: m for m in MODULES}
+    # ABSENCE banner sits at the top of the architecture section.
+    out.append(absence_banner(y0 + 60))
 
-    # Edges first.
+    mods = {m["id"]: m for m in MODULES}
+    aion_x, aion_y = SCHEMATIC_POSITIONS["aion_impulse"]
+
+    # 1) AION halo — concentric faint rings around the heartbeat.
+    for r, op in [(115, 0.22), (160, 0.13), (215, 0.07)]:
+        out.append(
+            f'<circle cx="{aion_x}" cy="{aion_y}" r="{r}" fill="none" '
+            f'stroke="#ff6b6b" stroke-width="1" opacity="{op}" '
+            f'stroke-dasharray="2 5" />'
+        )
+
+    # 2) Drive rays from AION to every other module — very faint, dotted.
+    #    Visual statement: 'everything moves because the heartbeat beats.'
+    for m in MODULES:
+        if m["id"] == "aion_impulse":
+            continue
+        mx, my = SCHEMATIC_POSITIONS[m["id"]]
+        out.append(
+            f'<line x1="{aion_x}" y1="{aion_y}" x2="{mx}" y2="{my}" '
+            f'stroke="#ff6b6b" stroke-width="0.7" opacity="0.11" '
+            f'stroke-dasharray="1 5" />'
+        )
+
+    # 3) Background mesh — every topology edge at very low opacity,
+    #    skipping pairs we'll re-draw as highlighted flows.
     for e in EDGES:
+        if (e["from"], e["to"]) in HIGHLIGHTED_PAIRS:
+            continue
         a = mods.get(e["from"])
         b = mods.get(e["to"])
         if not a or not b:
             continue
-        x1, y1 = mod_xy(a)
-        x2, y2 = mod_xy(b)
+        x1, y1 = SCHEMATIC_POSITIONS[a["id"]]
+        x2, y2 = SCHEMATIC_POSITIONS[b["id"]]
         col = SIGNAL_COLORS.get(e["via"], "#444")
-        if e["from"] == "environment" and e["to"] == "memory_senses":
-            cls = "edge-amber"
-        else:
-            cls = "edge"
         d = edge_path(x1, y1, x2, y2)
+        out.append(f'<path d="{d}" stroke="{col}" class="edge-faint" />')
+
+    # 4) Highlighted flows — the narrative arrows, with labels.
+    for from_id, to_id, col, label, dashed in HIGHLIGHTED_FLOWS:
+        x1, y1 = SCHEMATIC_POSITIONS[from_id]
+        x2, y2 = SCHEMATIC_POSITIONS[to_id]
+        d = edge_path(x1, y1, x2, y2, bend=10)
+        dash = ' stroke-dasharray="6 4"' if dashed else ""
+        marker_id = f'arrow-{col.lstrip("#")}'
         out.append(
-            f'<path d="{d}" stroke="{col}" class="{cls}" />'
+            f'<path d="{d}" fill="none" stroke="{col}" '
+            f'stroke-width="3" opacity="0.95"{dash} '
+            f'marker-end="url(#{marker_id})" />'
+        )
+        # Label at midpoint, perpendicular-offset from the line,
+        # with a halo so the text reads cleanly over the mesh.
+        mx, my = (x1 + x2) / 2, (y1 + y2) / 2
+        dx, dy = x2 - x1, y2 - y1
+        length = math.hypot(dx, dy) or 1
+        ox = -(dy / length) * 14
+        oy =  (dx / length) * 14
+        out.append(
+            f'<text x="{mx + ox}" y="{my + oy}" text-anchor="middle" '
+            f'class="flow-label" fill="{col}">{label}</text>'
         )
 
-    # Nodes.
-    desc_offset = {
-        "core":       66,
-        "perception": 50,
-        "decision":   58,
-        "self":       50,
-        "adapt":      52,
-        "env":        36,
-    }
+    # 5) Nodes (drawn on top of all edges).
     for m in MODULES:
-        x, y = mod_xy(m)
+        x, y = SCHEMATIC_POSITIONS[m["id"]]
         fill = ROLE_COLORS.get(m["role"], "#888")
-        out.append(node_shape(m["role"], x, y, fill))
+        out.append(node_shape(m["role"], x, y, fill, mod_id=m["id"]))
         out.append(render_label(m["role"], m["label"], x, y))
-
-        # Description below shape.
         desc = MODULE_DESC.get(m["id"], "")
         if desc:
-            dy = desc_offset.get(m["role"], 50)
+            dy = SCHEMATIC_DESC_OFFSET.get(m["role"], 50)
+            if m["id"] == "memory_senses":
+                dy = 60
             out.append(
                 f'<text x="{x}" y="{y + dy}" text-anchor="middle" '
                 f'class="desc">{desc}</text>'
             )
 
-    # Caption: edge legend
-    legend_y = y0 + 700
+    # 6) Caption: explain the two layers of edges.
+    legend_y = y0 + 900
     out.append(
-        f'<rect x="40" y="{legend_y}" width="{W - 80}" height="40" '
+        f'<rect x="40" y="{legend_y}" width="{W - 80}" height="48" '
         f'rx="4" class="panel-strong" />'
     )
     out.append(
-        f'<text x="60" y="{legend_y + 24}" class="muted">'
-        f"edges coloured by signal type · the amber dashed line is the sensory channel "
-        f"(Environment → Memory/Senses)"
+        f'<text x="60" y="{legend_y + 18}" class="muted">'
+        f"Bold coloured arrows are the narrative flows. Thin lines underneath are the underlying "
+        f"bus topology, colour-coded by signal type."
+        f"</text>"
+    )
+    out.append(
+        f'<text x="60" y="{legend_y + 36}" class="muted">'
+        f"Faint red rays radiating from AION show that every module is moved by the heartbeat — "
+        f"‘everything is driven by the Core’."
         f"</text>"
     )
     return "\n".join(out)
@@ -552,7 +668,7 @@ def section_architecture() -> str:
 
 def section_signals() -> str:
     """Section 04 — Signal vocabulary."""
-    y0 = 1620
+    y0 = 1790
     out = [section_title(y0, "04", "SIGNAL VOCABULARY",
                          "the eight typed messages on the bus")]
     panel_y = y0 + 60
@@ -602,7 +718,7 @@ def section_signals() -> str:
 
 def section_logos_concepts() -> str:
     """Section 05 — Logos opposition + key concepts."""
-    y0 = 1880
+    y0 = 2030
     out = [section_title(y0, "05", "LOGOS AND FOUNDATIONAL CONCEPTS",
                          "the philosophy behind the wiring")]
     body_y = y0 + 60
@@ -700,15 +816,16 @@ def section_logos_concepts() -> str:
     right_x = left_x + left_w + 16
     right_w = W - right_x - 40
     concepts = [
+        ("ABSENCE → SEARCH  (main stimulus)",
+         "Post-paleorevolution distinction: for animals, absence does not "
+         "transfer to need. For the human-like Conscience it does — AION "
+         "emits a Stimulus from silence itself, and the system searches."),
         ("WILL = NEED",
          "Output is input-dependent. There is no real free will: Desires arise "
          "from a complexity of stimuli, but moreover from absence."),
         ("MYSTERIUM",
          "The unknown that generates the irrational. Rises with novelty; drives "
          "Synthesis and Anticipation. Pushes Logos toward 'union'."),
-        ("SUBTRACTION PRINCIPLE",
-         "Synthesis proceeds by removing information. Speed is a product of "
-         "what the system learns to omit. Absence becomes 'I exist!'"),
         ("MEMORY IN-BETWEEN",
          "Memory does not live in brain or senses but in their relation. The "
          "Memory/Senses module records both Stimulus and Action."),
@@ -745,7 +862,7 @@ def section_logos_concepts() -> str:
 
 
 def section_lifecycle() -> str:
-    y0 = 2340
+    y0 = 2530
     out = [section_title(y0, "06", "LIFECYCLE",
                          "‘must be able to die’ · CONCEPTS.md")]
     panel_y = y0 + 60
@@ -792,7 +909,7 @@ def section_lifecycle() -> str:
 
 
 def section_footer() -> str:
-    y0 = 2530
+    y0 = 2710
     out = []
     out.append(
         f'<rect x="0" y="{y0}" width="{W}" height="{H - y0}" fill="{BG}" />'
@@ -845,7 +962,10 @@ def generate() -> str:
         f"  .node-core {{ stroke-width: 2.5; }}",
         f"  .env-shape {{ stroke-dasharray: 4 3; opacity: 0.95; }}",
         f"  .edge {{ fill: none; stroke-width: 1; opacity: 0.28; }}",
+        f"  .edge-faint {{ fill: none; stroke-width: 1; opacity: 0.14; }}",
         f"  .edge-amber {{ fill: none; stroke: #ffb14d; stroke-width: 3; opacity: 0.95; stroke-dasharray: 7 4; }}",
+        f"  .flow-label {{ font-size: 11px; font-weight: 700; "
+        f"paint-order: stroke; stroke: {BG}; stroke-width: 4; stroke-linejoin: round; }}",
         f"  .panel {{ fill: {SECTION_BG}; stroke: {BORDER}; stroke-width: 1; }}",
         f"  .panel-strong {{ fill: {BAND_BG}; stroke: {BORDER}; stroke-width: 1; }}",
         f"  .divider {{ stroke: {BORDER}; stroke-width: 1; }}",
@@ -856,6 +976,14 @@ def generate() -> str:
         '<marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" '
         'markerWidth="6" markerHeight="6" orient="auto-start-reverse">'
         f'<path d="M 0 0 L 10 5 L 0 10 z" fill="{ROLE_COLORS["core"]}" /></marker>',
+        # One arrow-head marker per highlighted-flow colour.
+        *[
+            f'<marker id="arrow-{c.lstrip("#")}" viewBox="0 0 10 10" '
+            f'refX="9" refY="5" markerWidth="7" markerHeight="7" '
+            f'orient="auto-start-reverse">'
+            f'<path d="M 0 0 L 10 5 L 0 10 z" fill="{c}" /></marker>'
+            for c in {col for _, _, col, _, _ in HIGHLIGHTED_FLOWS}
+        ],
         "</defs>",
         f'<rect width="{W}" height="{H}" fill="{BG}" />',
         section_header(),
