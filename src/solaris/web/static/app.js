@@ -13,13 +13,14 @@
 (() => {
   const NS = "http://www.w3.org/2000/svg";
 
+  // NERV / MAGI terminal palette.
   const ROLE_COLORS = {
-    core:       "#ff6b6b",
-    perception: "#62b6ff",
-    decision:   "#7cf088",
-    self:       "#ffb14d",
-    adapt:      "#c884ff",
-    env:        "#9aa5b1",
+    core:       "#ff2316",  // reactor red
+    perception: "#ffcc00",  // amber
+    decision:   "#2e8bff",  // cobalt
+    self:       "#ff7e29",  // orange
+    adapt:      "#ff4d6d",  // rose
+    env:        "#aeb8c2",  // steel
   };
 
   // Layout constants (svg coords).
@@ -37,9 +38,10 @@
   const edgeIndex = {}; // "origin|Type" -> [edgeRef]
 
   let svg, viewport, traceList, stateEl;
-  let vitalAge, vitalAlive, vitalCount, vitalEvents;
+  let vitalAge, vitalAlive, vitalCount, vitalEvents, vitalSync, timecodeEl;
   let zoomLevelEl;
   let eventCount = 0;
+  let bornAt = performance.now();
 
   // Zoom + pan state (in SVG-viewBox units).
   let zoom = 1;
@@ -312,7 +314,7 @@
 
   function pulse(sig) {
     eventCount += 1;
-    vitalEvents.textContent = `${eventCount} events`;
+    vitalEvents.textContent = `${eventCount}`;
 
     const key = `${sig.origin}|${sig.type}`;
     const edges = edgeIndex[key];
@@ -377,19 +379,25 @@
     if (!snap || !snap.lifecycle) return;
     vitalAge.textContent = `${(snap.lifecycle.age_s ?? 0).toFixed(1)}s`;
     if (snap.lifecycle.alive) {
-      vitalAlive.textContent = "alive";
+      vitalAlive.textContent = "ACTIVE";
       vitalAlive.className = "alive";
     } else {
-      vitalAlive.textContent = "dead";
+      vitalAlive.textContent = "OFFLINE";
       vitalAlive.className = "dead";
     }
     if (snap.modules) {
-      vitalCount.textContent = `${Object.keys(snap.modules).length} modules`;
+      vitalCount.textContent = `${Object.keys(snap.modules).length}`;
       for (const [name, st] of Object.entries(snap.modules)) {
         const card = document.getElementById(`state-${name}`);
         if (!card) continue;
         const kv = card.querySelector(".kv");
         kv.innerHTML = formatStateInline(st);
+      }
+      // 'Synchronization rate' — read from Auto-Determination's
+      // Being/Not-Being scalar, the system's self-agreement.
+      const being = snap.modules?.auto_determination?.being;
+      if (being != null && vitalSync) {
+        vitalSync.textContent = `${(being * 100).toFixed(1)}%`;
       }
     }
   }
@@ -435,9 +443,21 @@
       }
     };
     evt.onerror = () => {
-      vitalAlive.textContent = "disconnected";
+      vitalAlive.textContent = "LINK LOST";
       vitalAlive.className = "dead";
     };
+  }
+
+  function startTimecode() {
+    const tick = () => {
+      const elapsed = (performance.now() - bornAt) / 1000;
+      const hh = String(Math.floor(elapsed / 3600)).padStart(2, "0");
+      const mm = String(Math.floor((elapsed % 3600) / 60)).padStart(2, "0");
+      const ss = String(Math.floor(elapsed % 60)).padStart(2, "0");
+      if (timecodeEl) timecodeEl.textContent = `${hh}:${mm}:${ss}`;
+    };
+    tick();
+    setInterval(tick, 1000);
   }
 
   function attachControls() {
@@ -445,6 +465,8 @@
     vitalAlive  = document.getElementById("vital-alive");
     vitalCount  = document.getElementById("vital-count");
     vitalEvents = document.getElementById("vital-events");
+    vitalSync   = document.getElementById("vital-sync");
+    timecodeEl  = document.getElementById("timecode");
     traceList   = document.getElementById("trace-log");
 
     document.getElementById("stim-form")
@@ -497,6 +519,7 @@
     buildGraph();
     attachZoom();
     buildStateCards();
+    startTimecode();
     startSSE();
   }
 

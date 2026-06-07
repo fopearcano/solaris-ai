@@ -3,68 +3,87 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Solaris_Ai — Conscience</title>
+  <title>SOLARIS_AI — CONSCIENCE</title>
   <link rel="stylesheet" href="/app.css" />
 </head>
 <body>
 
-<header>
-  <div class="title">
-    <h1>Solaris_Ai</h1>
-    <span class="subtitle">— Conscience</span>
-  </div>
-  <div class="vitals">
-    <span>age: <strong id="vital-age">0.0s</strong></span>
-    <span id="vital-alive" class="dead">connecting…</span>
-    <span id="vital-count">0 modules</span>
-    <span id="vital-events">0 events</span>
-  </div>
-</header>
+<div class="scanlines"></div>
 
-<main>
-  <section class="graph-panel">
-    <svg id="graph" viewBox="0 0 1500 800" preserveAspectRatio="xMidYMid meet"></svg>
-    <div class="graph-controls">
-      <button id="zoom-in"    title="Zoom in (or scroll up)">+</button>
-      <button id="zoom-out"   title="Zoom out (or scroll down)">−</button>
-      <button id="zoom-reset" title="Reset view">⌂</button>
-      <span id="zoom-level">100%</span>
+<div class="app">
+
+  <header class="hud-top">
+    <span class="tab"></span>
+    <span class="hud-status">VERIFYING NEUROLOGICAL LINKUP:&nbsp; <b>CALCULATING SYNCHRONIZATION RATE</b></span>
+    <span class="hud-spacer"></span>
+    <span class="hud-time" id="timecode">00:00:00</span>
+    <span class="hud-kana">ソラリス・アイ</span>
+  </header>
+
+  <main>
+    <section class="graph-panel brackets">
+      <div class="id-block">
+        <div class="id-kicker">MONITORED TARGET · SUBJECT</div>
+        <div class="id-name">SOLARIS<span class="dim">_</span>AI</div>
+        <div class="id-sub">CONSCIENCE SYSTEM</div>
+      </div>
+
+      <div class="vitals">
+        <span class="v-row"><i>AGE</i><strong id="vital-age">0.0s</strong></span>
+        <span class="v-row"><i>STATE</i><strong id="vital-alive" class="dead">···</strong></span>
+        <span class="v-row"><i>MODULES</i><strong id="vital-count">0</strong></span>
+        <span class="v-row"><i>EVENTS</i><strong id="vital-events">0</strong></span>
+        <span class="v-row sync"><i>SYNC&nbsp;RATE</i><strong id="vital-sync">0.0%</strong></span>
+      </div>
+
+      <svg id="graph" viewBox="0 0 1500 800" preserveAspectRatio="xMidYMid meet"></svg>
+
+      <div class="graph-controls">
+        <button id="zoom-in"    title="Zoom in (or scroll up)">+</button>
+        <button id="zoom-out"   title="Zoom out (or scroll down)">−</button>
+        <button id="zoom-reset" title="Reset view">⌂</button>
+        <span id="zoom-level">100%</span>
+      </div>
+
+      <div class="legend">
+        <span><i class="shape hex"></i>core</span>
+        <span><i class="shape circle"></i>perception</span>
+        <span><i class="shape diamond"></i>decision</span>
+        <span><i class="shape square"></i>self</span>
+        <span><i class="shape hex-flat"></i>adapt</span>
+        <span><i class="shape rect"></i>environment</span>
+      </div>
+
+      <div class="ruler"></div>
+    </section>
+
+    <aside class="state-panel brackets">
+      <h2>◢ MODULE STATE</h2>
+      <div id="modules-state"></div>
+    </aside>
+  </main>
+
+  <section class="controls brackets">
+    <form id="stim-form">
+      <label>payload   <input id="payload"   value="light"  /></label>
+      <label>modality  <input id="modality"  value="vision" /></label>
+      <label>intensity <input id="intensity" type="number" step="0.1" min="0" max="1" value="0.7" /></label>
+      <button type="submit">Stimulate</button>
+    </form>
+    <div class="control-group">
+      <button id="react-pos">React +0.7</button>
+      <button id="react-neg">React −0.8</button>
     </div>
-    <div class="legend">
-      <span><i class="shape hex"></i>core</span>
-      <span><i class="shape circle"></i>perception</span>
-      <span><i class="shape diamond"></i>decision</span>
-      <span><i class="shape square"></i>self</span>
-      <span><i class="shape hex-flat"></i>adapt</span>
-      <span><i class="shape rect"></i>environment</span>
-    </div>
+    <button id="die" class="danger">Die</button>
+    <span class="control-hint">stimulate → push → desire → action · react to teach Habit / Backprop</span>
   </section>
 
-  <aside class="state-panel">
-    <h2>Module state</h2>
-    <div id="modules-state"></div>
-  </aside>
-</main>
+  <section class="trace brackets">
+    <h2>◢ LIVE TRACE</h2>
+    <ul id="trace-log"></ul>
+  </section>
 
-<section class="controls">
-  <form id="stim-form">
-    <label>payload   <input id="payload"   value="light"  /></label>
-    <label>modality  <input id="modality"  value="vision" /></label>
-    <label>intensity <input id="intensity" type="number" step="0.1" min="0" max="1" value="0.7" /></label>
-    <button type="submit">Stimulate</button>
-  </form>
-  <div class="control-group">
-    <button id="react-pos">React +0.7</button>
-    <button id="react-neg">React −0.8</button>
-  </div>
-  <button id="die" class="danger">Die</button>
-  <span class="control-hint">stimulate → push → desire → action — react to teach Habit / Backprop</span>
-</section>
-
-<section class="trace">
-  <h2>Live trace</h2>
-  <ul id="trace-log"></ul>
-</section>
+</div>
 
 <script src="/app.js"></script>
 </body>
