@@ -76,6 +76,114 @@
     return pts.join(" ");
   }
 
+  function triPoints(r) {
+    // Equilateral triangle pointing up, circumradius r.
+    const p = [];
+    for (let i = 0; i < 3; i++) {
+      const a = ((-90 + i * 120) * Math.PI) / 180;
+      p.push(`${(r * Math.cos(a)).toFixed(2)},${(r * Math.sin(a)).toFixed(2)}`);
+    }
+    return p.join(" ");
+  }
+
+  // ---- orthogonal ("manhattan") edge routing -------------------------
+  // The MAGI / gene-map look: right-angle wire runs with rounded
+  // corners, fanned out into a ribbon so parallel runs separate.
+
+  function orthWaypoints(x1, y1, x2, y2, spread) {
+    const dx = Math.abs(x2 - x1);
+    const dy = Math.abs(y2 - y1);
+    if (dx < 2 || dy < 2) return [{ x: x1, y: y1 }, { x: x2, y: y2 }];
+    if (dy >= dx) {
+      const my = (y1 + y2) / 2 + spread;
+      return [{ x: x1, y: y1 }, { x: x1, y: my }, { x: x2, y: my }, { x: x2, y: y2 }];
+    }
+    const mx = (x1 + x2) / 2 + spread;
+    return [{ x: x1, y: y1 }, { x: mx, y: y1 }, { x: mx, y: y2 }, { x: x2, y: y2 }];
+  }
+
+  function roundedPath(pts, r) {
+    if (pts.length < 2) return "";
+    if (pts.length === 2) {
+      return `M ${pts[0].x} ${pts[0].y} L ${pts[1].x} ${pts[1].y}`;
+    }
+    let d = `M ${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)}`;
+    for (let i = 1; i < pts.length - 1; i++) {
+      const p0 = pts[i - 1], p1 = pts[i], p2 = pts[i + 1];
+      const len1 = Math.hypot(p1.x - p0.x, p1.y - p0.y) || 1;
+      const len2 = Math.hypot(p2.x - p1.x, p2.y - p1.y) || 1;
+      const rr = Math.min(r, len1 / 2, len2 / 2);
+      const ax = p1.x - ((p1.x - p0.x) / len1) * rr;
+      const ay = p1.y - ((p1.y - p0.y) / len1) * rr;
+      const bx = p1.x + ((p2.x - p1.x) / len2) * rr;
+      const by = p1.y + ((p2.y - p1.y) / len2) * rr;
+      d += ` L ${ax.toFixed(1)} ${ay.toFixed(1)}`;
+      d += ` Q ${p1.x.toFixed(1)} ${p1.y.toFixed(1)} ${bx.toFixed(1)} ${by.toFixed(1)}`;
+    }
+    const last = pts[pts.length - 1];
+    d += ` L ${last.x.toFixed(1)} ${last.y.toFixed(1)}`;
+    return d;
+  }
+
+  /** Concentric red rings + radial ticks behind the AION core (MAGI). */
+  function buildCoreDecor(cx, cy) {
+    const g = svgEl("g", { class: "core-decor" });
+    // glow disc
+    g.appendChild(svgEl("circle", { cx, cy, r: 150, class: "magi-glow" }));
+    // concentric rings
+    const rings = [
+      { r: 40, o: 0.85 }, { r: 64, o: 0.6 }, { r: 90, o: 0.42 },
+      { r: 118, o: 0.3 }, { r: 148, o: 0.2 },
+    ];
+    for (const { r, o } of rings) {
+      g.appendChild(svgEl("circle", {
+        cx, cy, r, class: "magi-ring",
+        style: `opacity:${o}`,
+      }));
+    }
+    // radial tick marks around the outer ring
+    const ticks = 48;
+    for (let i = 0; i < ticks; i++) {
+      const a = (i / ticks) * 2 * Math.PI;
+      const r0 = 120, r1 = i % 4 === 0 ? 146 : 138;
+      g.appendChild(svgEl("line", {
+        x1: (cx + r0 * Math.cos(a)).toFixed(1),
+        y1: (cy + r0 * Math.sin(a)).toFixed(1),
+        x2: (cx + r1 * Math.cos(a)).toFixed(1),
+        y2: (cy + r1 * Math.sin(a)).toFixed(1),
+        class: "magi-tick",
+      }));
+    }
+    return g;
+  }
+
+  /** The MAGI reactor: glowing triangle + three radiating arm bars. */
+  function buildMagiCore(g, label) {
+    // three arm bars at 120°, behind the triangle
+    for (let i = 0; i < 3; i++) {
+      const ang = -90 + i * 120;
+      const arm = svgEl("rect", {
+        x: -7, y: -64, width: 14, height: 34, rx: 2,
+        class: "magi-arm",
+        transform: `rotate(${ang})`,
+      });
+      g.appendChild(arm);
+    }
+    // outer + inner triangle
+    g.appendChild(svgEl("polygon", { points: triPoints(40), class: "node-shape magi-tri-outer" }));
+    g.appendChild(svgEl("polygon", { points: triPoints(30), class: "magi-tri-inner" }));
+    const t1 = svgEl("text", { y: -2, "text-anchor": "middle", class: "magi-label" });
+    t1.textContent = "AION";
+    g.appendChild(t1);
+    const t2 = svgEl("text", { y: 11, "text-anchor": "middle", class: "magi-sub" });
+    t2.textContent = "01";
+    g.appendChild(t2);
+    // descriptive label below the rings
+    const t3 = svgEl("text", { y: 66, "text-anchor": "middle", class: "core-caption" });
+    t3.textContent = label;
+    g.appendChild(t3);
+  }
+
   /** Build the SVG element that represents a node, sized + shaped by role. */
   function nodeShapeFor(role) {
     switch (role) {
@@ -140,26 +248,21 @@
       nodeById[m.id] = m;
     }
 
-    // Edges first so nodes paint over them.
-    for (const e of topology.edges) {
+    // MAGI core decor (concentric rings) behind everything.
+    const aion = nodeById["aion_impulse"];
+    if (aion) viewport.appendChild(buildCoreDecor(aion.x, aion.y));
+
+    // Edges: orthogonal runs with rounded corners, fanned into a
+    // ribbon so parallel runs separate (MAGI / gene-map look).
+    topology.edges.forEach((e, ei) => {
       const a = nodeById[e.from];
       const b = nodeById[e.to];
-      if (!a || !b) continue;
+      if (!a || !b) return;
 
-      // Curved path with a perpendicular offset so parallel edges
-      // do not overlap.
-      const mx = (a.x + b.x) / 2;
-      const my = (a.y + b.y) / 2;
-      const dx = b.x - a.x;
-      const dy = b.y - a.y;
-      const len = Math.hypot(dx, dy) || 1;
-      const curveSign = (a.row > b.row || (a.row === b.row && a.col > b.col)) ? 1 : -1;
-      const off = 22 * curveSign;
-      const cx = mx - (dy / len) * off;
-      const cy = my + (dx / len) * off;
-
+      const spread = ((ei % 7) - 3) * 7;
+      const pts = orthWaypoints(a.x, a.y, b.x, b.y, spread);
       const path = svgEl("path", {
-        d: `M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}`,
+        d: roundedPath(pts, 12),
         class: `edge via-${e.via}`,
         "data-from": e.from,
         "data-to":   e.to,
@@ -170,7 +273,7 @@
 
       const key = `${e.from}|${e.via}`;
       (edgeIndex[key] ||= []).push(e);
-    }
+    });
 
     // Nodes.
     for (const m of topology.modules) {
@@ -179,13 +282,20 @@
         transform: `translate(${m.x},${m.y})`,
       });
 
-      const shape = nodeShapeFor(m.role);
-      shape.setAttribute("fill", ROLE_COLORS[m.role] || "#888");
-      g.appendChild(shape);
+      if (m.id === "aion_impulse") {
+        buildMagiCore(g, m.label);
+      } else {
+        const shape = nodeShapeFor(m.role);
+        // Dark "hardware package" fill with a glowing role-coloured edge.
+        shape.setAttribute("fill", "rgba(10,7,7,0.92)");
+        shape.setAttribute("stroke", ROLE_COLORS[m.role] || "#888");
+        g.appendChild(shape);
 
-      const label = svgEl("text", { y: 4, "text-anchor": "middle" });
-      label.textContent = m.label;
-      g.appendChild(label);
+        const label = svgEl("text", { y: 4, "text-anchor": "middle" });
+        label.setAttribute("fill", ROLE_COLORS[m.role] || "#cfd6dd");
+        label.textContent = m.label;
+        g.appendChild(label);
+      }
 
       viewport.appendChild(g);
       m.elem = g;

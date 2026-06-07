@@ -322,6 +322,10 @@ main {
   width: 14px; height: 12px;
   clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
 }
+.legend .shape.tri {
+  width: 14px; height: 13px;
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+}
 .legend .shape.circle  { border-radius: 50%; }
 .legend .shape.diamond { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
 .legend .shape.square  { border-radius: 1px; }
@@ -473,9 +477,9 @@ main {
 
 .edge {
   fill: none;
-  stroke: var(--line-lit);
+  stroke: var(--amber-dim);
   stroke-width: 1;
-  opacity: 0.4;
+  opacity: 0.3;
   transition: stroke 0.15s, opacity 0.15s, stroke-width 0.15s, filter 0.15s;
 }
 
@@ -506,7 +510,7 @@ main {
 
 .node .node-shape {
   stroke: #000;
-  stroke-width: 1.5;
+  stroke-width: 2;
   transition: filter 0.15s;
 }
 /* Per-role reactor glow. */
@@ -520,13 +524,83 @@ main {
   filter: drop-shadow(0 0 16px rgba(255,255,255,0.95));
 }
 .node text {
-  fill: #050608;
+  fill: var(--txt);
   font-size: 9.5px;
   font-weight: 700;
   font-family: ui-monospace, "JetBrains Mono", Menlo, monospace;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  pointer-events: none;
+  user-select: none;
+  paint-order: stroke;
+  stroke: #050608;
+  stroke-width: 2.5px;
+  stroke-linejoin: round;
+}
+.node.role-core text { font-size: 11px; }
+
+/* ---- MAGI reactor core ------------------------------------------ */
+
+.core-decor { pointer-events: none; }
+.magi-glow {
+  fill: #6e1410;
+  opacity: 0.5;
+  filter: blur(20px);
+}
+.magi-ring {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 1;
+}
+.magi-tick {
+  stroke: var(--amber-dim);
+  stroke-width: 1;
+  opacity: 0.5;
+}
+.magi-arm {
+  fill: #c9ccd2;
+  stroke: #6b6e74;
+  stroke-width: 1;
+  filter: drop-shadow(0 0 3px rgba(255,255,255,0.3));
+}
+.magi-tri-outer {
+  fill: var(--amber);
+  stroke: #a8780a;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 12px rgba(255,204,0,0.85));
+}
+.magi-tri-inner {
+  fill: #ffe066;
+  stroke: none;
+}
+.magi-label {
+  fill: #3a2a06;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   pointer-events: none;
   user-select: none;
 }
-.node.role-core text { font-size: 11px; }
-.node.role-env text  { fill: #050608; }
+.magi-sub {
+  fill: #5a4208;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  pointer-events: none;
+  user-select: none;
+}
+.core-caption {
+  fill: var(--amber);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  pointer-events: none;
+  user-select: none;
+  paint-order: stroke;
+  stroke: #050608;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  text-shadow: 0 0 6px rgba(255,204,0,0.5);
+}
+.node.flashing .magi-tri-outer { filter: drop-shadow(0 0 20px rgba(255,235,120,1)); }
