@@ -604,3 +604,86 @@ main {
   text-shadow: 0 0 6px rgba(255,204,0,0.5);
 }
 .node.flashing .magi-tri-outer { filter: drop-shadow(0 0 20px rgba(255,235,120,1)); }
+
+/* ---- wires: hit area, drag handle, function tag ----------------- */
+
+#graph.wiring { cursor: grabbing; }
+
+.edge-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 16;
+  cursor: grab;
+}
+.edge-group.dragging .edge-hit { cursor: grabbing; }
+.edge-group:hover .edge { opacity: 0.9; }
+
+.edge-handle {
+  fill: var(--amber);
+  stroke: #050608;
+  stroke-width: 1;
+  opacity: 0;
+  cursor: grab;
+  transition: opacity 0.12s;
+  filter: drop-shadow(0 0 4px rgba(255,204,0,0.85));
+}
+.edge-tag {
+  fill: var(--amber);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+  paint-order: stroke;
+  stroke: #050608;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  transition: opacity 0.12s;
+}
+.edge-group:hover .edge-handle,
+.edge-group:hover .edge-tag,
+.edge-group.dragging .edge-handle,
+.edge-group.dragging .edge-tag,
+.edge-group.lit .edge-tag,
+#graph.show-wires .edge-handle,
+#graph.show-wires .edge-tag { opacity: 1; }
+#graph.show-wires .edge-handle { opacity: 0.85; }
+
+.graph-controls button.on {
+  background: var(--red-deep);
+  border-color: var(--red);
+  color: var(--amber);
+}
+
+/* ---- node sub-module property panels ---------------------------- */
+
+.node.clickable { cursor: pointer; }
+.node.expanded .node-shape { filter: drop-shadow(0 0 12px currentColor); }
+
+.prop-panel { pointer-events: none; }
+.prop-box {
+  fill: rgba(8,5,5,0.96);
+  stroke: var(--line-lit);
+  stroke-width: 1;
+  filter: drop-shadow(0 0 10px rgba(0,0,0,0.85));
+}
+.prop-head { opacity: 0.92; }
+.prop-title {
+  fill: #0a0607;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.prop-tick { opacity: 0.9; }
+.prop-row-k {
+  fill: var(--txt-dim);
+  font-size: 10px;
+  letter-spacing: 0.03em;
+}
+.prop-row-v {
+  fill: var(--amber);
+  font-size: 10px;
+  letter-spacing: 0.03em;
+}

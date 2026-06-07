@@ -23,6 +23,19 @@
     env:        "#aeb8c2",  // steel
   };
 
+  // The function each connection carries, by signal type — used to
+  // tag the wires.
+  const SIGNAL_FN = {
+    Stimulus:     "senses",
+    Push:         "drive",
+    Desire:       "intends",
+    Action:       "acts",
+    Reaction:     "feedback",
+    MeaningEvent: "means",
+    MapUpdate:    "writes-self",
+    LogosTension: "tension",
+  };
+
   // Layout constants (svg coords).
   const COL_W = 200;
   const ROW_H = 130;
@@ -42,6 +55,14 @@
   let zoomLevelEl;
   let eventCount = 0;
   let bornAt = performance.now();
+
+  // Wires + sub-module panels.
+  let lastSnap = null;
+  let edgeDrag = null;
+  let showWires = false;
+  const edgeList = [];
+  const expanded = new Set();
+  const propPanels = {};
 
   // Zoom + pan state (in SVG-viewBox units).
   let zoom = 1;
@@ -252,30 +273,43 @@
     const aion = nodeById["aion_impulse"];
     if (aion) viewport.appendChild(buildCoreDecor(aion.x, aion.y));
 
-    // Edges: orthogonal runs with rounded corners, fanned into a
-    // ribbon so parallel runs separate (MAGI / gene-map look).
+    // Edges: orthogonal runs with rounded corners. Each wire is
+    // grabbable (drag the handle to re-route) and tagged with the
+    // function (signal type) it carries.
     topology.edges.forEach((e, ei) => {
       const a = nodeById[e.from];
       const b = nodeById[e.to];
       if (!a || !b) return;
 
-      const spread = ((ei % 7) - 3) * 7;
-      const pts = orthWaypoints(a.x, a.y, b.x, b.y, spread);
-      const path = svgEl("path", {
-        d: roundedPath(pts, 12),
+      e.a = a; e.b = b;
+      const spread = ((ei % 7) - 3) * 12;
+      e.pivot = { x: (a.x + b.x) / 2 + spread, y: (a.y + b.y) / 2 };
+
+      const group  = svgEl("g", { class: "edge-group", "data-via": e.via });
+      const hit    = svgEl("path", { class: "edge-hit" });
+      const path   = svgEl("path", {
         class: `edge via-${e.via}`,
-        "data-from": e.from,
-        "data-to":   e.to,
-        "data-via":  e.via,
+        "data-from": e.from, "data-to": e.to, "data-via": e.via,
       });
-      viewport.appendChild(path);
-      e.elem = path;
+      const handle = svgEl("circle", { r: 4.5, class: "edge-handle" });
+      const tag    = svgEl("text", { class: "edge-tag", "text-anchor": "middle" });
+      const fn = SIGNAL_FN[e.via];
+      tag.textContent = fn ? `${e.via} · ${fn}` : e.via;
+      group.append(hit, path, handle, tag);
+      viewport.appendChild(group);
+
+      e.group = group; e.elem = path; e.hit = hit; e.handle = handle; e.tag = tag;
+      edgeList.push(e);
+      renderEdge(e);
+
+      hit.addEventListener("mousedown", (ev) => startEdgeDrag(ev, e));
+      handle.addEventListener("mousedown", (ev) => startEdgeDrag(ev, e));
 
       const key = `${e.from}|${e.via}`;
       (edgeIndex[key] ||= []).push(e);
     });
 
-    // Nodes.
+    // Nodes. Click a node to open/close its sub-module property panel.
     for (const m of topology.modules) {
       const g = svgEl("g", {
         class: `node role-${m.role}`,
@@ -297,9 +331,124 @@
         g.appendChild(label);
       }
 
+      if (m.id !== "environment") {
+        g.classList.add("clickable");
+        g.addEventListener("click", (ev) => {
+          ev.stopPropagation();
+          toggleProps(m);
+        });
+      }
+
       viewport.appendChild(g);
       m.elem = g;
     }
+  }
+
+  // ---- wires: render, drag, function tags ----------------------------
+
+  function renderEdge(e) {
+    const { a, b, pivot: p } = e;
+    // Four orthogonal segments routed through the draggable pivot.
+    const pts = [
+      { x: a.x, y: a.y },
+      { x: a.x, y: p.y },
+      { x: p.x, y: p.y },
+      { x: p.x, y: b.y },
+      { x: b.x, y: b.y },
+    ];
+    const d = roundedPath(pts, 10);
+    e.elem.setAttribute("d", d);
+    e.hit.setAttribute("d", d);
+    e.handle.setAttribute("cx", p.x);
+    e.handle.setAttribute("cy", p.y);
+    e.tag.setAttribute("x", p.x);
+    e.tag.setAttribute("y", p.y - 8);
+  }
+
+  function startEdgeDrag(ev, e) {
+    ev.preventDefault();
+    ev.stopPropagation();
+    edgeDrag = e;
+    e.group.classList.add("dragging");
+    svg.classList.add("wiring");
+  }
+
+  function edgeDragMove(ev) {
+    if (!edgeDrag) return;
+    const s = screenToSvg(ev.clientX, ev.clientY);
+    edgeDrag.pivot = { x: (s.x - pan.x) / zoom, y: (s.y - pan.y) / zoom };
+    renderEdge(edgeDrag);
+  }
+
+  function endEdgeDrag() {
+    if (!edgeDrag) return;
+    edgeDrag.group.classList.remove("dragging");
+    edgeDrag = null;
+    svg.classList.remove("wiring");
+  }
+
+  // ---- node sub-module property panels -------------------------------
+
+  function toggleProps(m) {
+    if (expanded.has(m.id)) {
+      expanded.delete(m.id);
+      m.elem.classList.remove("expanded");
+      const pg = propPanels[m.id];
+      if (pg) { pg.remove(); delete propPanels[m.id]; }
+    } else {
+      expanded.add(m.id);
+      m.elem.classList.add("expanded");
+      renderProps(m);
+    }
+  }
+
+  function renderProps(m) {
+    const st = lastSnap && lastSnap.modules ? lastSnap.modules[m.id] : null;
+    let pg = propPanels[m.id];
+    if (!pg) {
+      pg = svgEl("g", { class: "prop-panel" });
+      viewport.appendChild(pg);
+      propPanels[m.id] = pg;
+    }
+    while (pg.firstChild) pg.removeChild(pg.firstChild);
+
+    const entries = st
+      ? Object.entries(st).filter(([k]) => k !== "name")
+      : [];
+    const w = 178, rowH = 16, headH = 20;
+    const h = headH + Math.max(1, entries.length) * rowH + 8;
+    let px = m.x + 58;
+    let py = m.y - h / 2;
+    if (px + w > 1500) px = m.x - 58 - w;   // flip left near right edge
+    if (py < 4) py = 4;
+    pg.setAttribute("transform", `translate(${px.toFixed(1)},${py.toFixed(1)})`);
+
+    pg.appendChild(svgEl("rect", { x: 0, y: 0, width: w, height: h, rx: 4, class: "prop-box" }));
+    const head = svgEl("rect", { x: 0, y: 0, width: w, height: headH, class: "prop-head" });
+    head.setAttribute("style", `fill:${ROLE_COLORS[m.role] || "#888"}`);
+    pg.appendChild(head);
+    const title = svgEl("text", { x: 9, y: 14, class: "prop-title" });
+    title.textContent = `${m.label} · SUB-MODULES`;
+    pg.appendChild(title);
+
+    if (!entries.length) {
+      const t = svgEl("text", { x: 9, y: headH + 16, class: "prop-row-v" });
+      t.textContent = "— no telemetry —";
+      pg.appendChild(t);
+      return;
+    }
+    entries.forEach(([k, v], i) => {
+      const ry = headH + 14 + i * rowH;
+      const tick = svgEl("rect", { x: 9, y: ry - 8, width: 6, height: 6, class: "prop-tick" });
+      tick.setAttribute("style", `fill:${ROLE_COLORS[m.role] || "#888"}`);
+      pg.appendChild(tick);
+      const tk = svgEl("text", { x: 22, y: ry, class: "prop-row-k" });
+      tk.textContent = k;
+      pg.appendChild(tk);
+      const tv = svgEl("text", { x: w - 9, y: ry, "text-anchor": "end", class: "prop-row-v" });
+      tv.textContent = formatValue(v);
+      pg.appendChild(tv);
+    });
   }
 
   // ---- zoom + pan -----------------------------------------------------
@@ -354,6 +503,13 @@
     });
     document.getElementById("zoom-reset").addEventListener("click", resetView);
 
+    const tw = document.getElementById("toggle-wires");
+    if (tw) tw.addEventListener("click", () => {
+      showWires = !showWires;
+      svg.classList.toggle("show-wires", showWires);
+      tw.classList.toggle("on", showWires);
+    });
+
     // Mouse-wheel zoom, centered on cursor.
     svg.addEventListener("wheel", (e) => {
       e.preventDefault();
@@ -362,9 +518,9 @@
       zoomAt(p.x, p.y, factor);
     }, { passive: false });
 
-    // Click-and-drag to pan (background only, not nodes).
+    // Click-and-drag to pan (background only — not nodes or wires).
     svg.addEventListener("mousedown", (e) => {
-      if (e.target.closest(".node")) return;
+      if (e.target.closest(".node") || e.target.closest(".edge-group")) return;
       e.preventDefault();
       isPanning = true;
       panStart = {
@@ -391,6 +547,10 @@
         svg.classList.remove("panning");
       }
     });
+
+    // Wire dragging.
+    window.addEventListener("mousemove", edgeDragMove);
+    window.addEventListener("mouseup", endEdgeDrag);
 
     // Keyboard shortcuts: + / - / 0
     window.addEventListener("keydown", (e) => {
@@ -431,8 +591,12 @@
     if (edges) {
       for (const e of edges) {
         e.elem.classList.add("active");
+        if (e.group) e.group.classList.add("lit");
         if (e._timer) clearTimeout(e._timer);
-        e._timer = setTimeout(() => e.elem.classList.remove("active"), 350);
+        e._timer = setTimeout(() => {
+          e.elem.classList.remove("active");
+          if (e.group) e.group.classList.remove("lit");
+        }, 350);
       }
     }
     const node = nodeById[sig.origin];
@@ -509,6 +673,12 @@
       if (being != null && vitalSync) {
         vitalSync.textContent = `${(being * 100).toFixed(1)}%`;
       }
+    }
+    // Keep any open sub-module panels current.
+    lastSnap = snap;
+    for (const id of expanded) {
+      const m = nodeById[id];
+      if (m) renderProps(m);
     }
   }
 
