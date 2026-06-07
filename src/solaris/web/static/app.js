@@ -590,13 +590,12 @@
     const edges = edgeIndex[key];
     if (edges) {
       for (const e of edges) {
+        // Hold the active state long enough that the slow CSS
+        // transition reads as one gentle fade up-and-down, not a
+        // blink. Tags are NOT touched here, so they never blink.
         e.elem.classList.add("active");
-        if (e.group) e.group.classList.add("lit");
         if (e._timer) clearTimeout(e._timer);
-        e._timer = setTimeout(() => {
-          e.elem.classList.remove("active");
-          if (e.group) e.group.classList.remove("lit");
-        }, 350);
+        e._timer = setTimeout(() => e.elem.classList.remove("active"), 620);
       }
     }
     const node = nodeById[sig.origin];
@@ -605,7 +604,7 @@
       if (node._timer) clearTimeout(node._timer);
       node._timer = setTimeout(
         () => node.elem.classList.remove("flashing"),
-        260,
+        680,
       );
     }
     appendTrace(sig);

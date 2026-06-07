@@ -480,7 +480,8 @@ main {
   stroke: var(--amber-dim);
   stroke-width: 1;
   opacity: 0.3;
-  transition: stroke 0.15s, opacity 0.15s, stroke-width 0.15s, filter 0.15s;
+  /* Slow, gentle fade in/out when a signal passes through. */
+  transition: stroke 0.6s ease, opacity 0.7s ease, stroke-width 0.6s ease, filter 0.6s ease;
 }
 
 /* Sensory channel: Environment -> Memory/Senses, amber + prominent. */
@@ -493,25 +494,25 @@ main {
 }
 .edge[data-from="environment"] { stroke: #5a221c; opacity: 0.55; }
 
+/* Active = a faint, slow glow (no harsh flash). */
 .edge.active {
-  stroke: #ffffff;
-  stroke-width: 2;
-  opacity: 1;
+  stroke-width: 1.6;
+  opacity: 0.62;
   stroke-dasharray: none;
 }
-.edge.via-Stimulus.active     { stroke: var(--amber);  filter: drop-shadow(0 0 5px var(--amber)); }
-.edge.via-Push.active         { stroke: var(--red);    filter: drop-shadow(0 0 5px var(--red)); }
-.edge.via-Desire.active       { stroke: var(--orange); filter: drop-shadow(0 0 5px var(--orange)); }
-.edge.via-Action.active       { stroke: var(--blue);   filter: drop-shadow(0 0 5px var(--blue)); }
-.edge.via-Reaction.active     { stroke: var(--rose);   filter: drop-shadow(0 0 5px var(--rose)); }
-.edge.via-MeaningEvent.active { stroke: #25c8ff;       filter: drop-shadow(0 0 5px #25c8ff); }
-.edge.via-MapUpdate.active    { stroke: #b06bff;       filter: drop-shadow(0 0 5px #b06bff); }
-.edge.via-LogosTension.active { stroke: #ffd9b0;       filter: drop-shadow(0 0 5px rgba(255,217,176,0.7)); }
+.edge.via-Stimulus.active     { stroke: var(--amber);  filter: drop-shadow(0 0 3px rgba(255,204,0,0.45)); }
+.edge.via-Push.active         { stroke: var(--red);    filter: drop-shadow(0 0 3px rgba(255,35,22,0.45)); }
+.edge.via-Desire.active       { stroke: var(--orange); filter: drop-shadow(0 0 3px rgba(255,126,41,0.45)); }
+.edge.via-Action.active       { stroke: var(--blue);   filter: drop-shadow(0 0 3px rgba(46,139,255,0.45)); }
+.edge.via-Reaction.active     { stroke: var(--rose);   filter: drop-shadow(0 0 3px rgba(255,77,109,0.45)); }
+.edge.via-MeaningEvent.active { stroke: #25c8ff;       filter: drop-shadow(0 0 3px rgba(37,200,255,0.45)); }
+.edge.via-MapUpdate.active    { stroke: #b06bff;       filter: drop-shadow(0 0 3px rgba(176,107,255,0.45)); }
+.edge.via-LogosTension.active { stroke: #ffd9b0;       filter: drop-shadow(0 0 3px rgba(255,217,176,0.4)); }
 
 .node .node-shape {
   stroke: #000;
   stroke-width: 2;
-  transition: filter 0.15s;
+  transition: filter 0.6s ease;
 }
 /* Per-role reactor glow. */
 .node.role-core .node-shape  { stroke-width: 2.5; filter: drop-shadow(0 0 7px var(--red)); }
@@ -520,8 +521,9 @@ main {
 .node.role-self .node-shape       { filter: drop-shadow(0 0 5px rgba(255,126,41,0.6)); }
 .node.role-adapt .node-shape      { filter: drop-shadow(0 0 5px rgba(255,77,109,0.55)); }
 .node.role-env .node-shape  { stroke: var(--red); stroke-dasharray: 3 3; opacity: 0.92; }
+/* Active module = a soft, slow amber glow — not a white flash. */
 .node.flashing .node-shape {
-  filter: drop-shadow(0 0 16px rgba(255,255,255,0.95));
+  filter: drop-shadow(0 0 9px rgba(255,221,150,0.45));
 }
 .node text {
   fill: var(--txt);
@@ -568,6 +570,7 @@ main {
   stroke: #a8780a;
   stroke-width: 2;
   filter: drop-shadow(0 0 12px rgba(255,204,0,0.85));
+  transition: filter 0.6s ease;
 }
 .magi-tri-inner {
   fill: #ffe066;
@@ -603,7 +606,7 @@ main {
   stroke-linejoin: round;
   text-shadow: 0 0 6px rgba(255,204,0,0.5);
 }
-.node.flashing .magi-tri-outer { filter: drop-shadow(0 0 20px rgba(255,235,120,1)); }
+.node.flashing .magi-tri-outer { filter: drop-shadow(0 0 12px rgba(255,235,120,0.55)); }
 
 /* ---- wires: hit area, drag handle, function tag ----------------- */
 
@@ -642,11 +645,12 @@ main {
   stroke-linejoin: round;
   transition: opacity 0.12s;
 }
+/* Tags reveal on hover, while dragging, or via the ⌗ toggle —
+   but never blink with signal activity. */
 .edge-group:hover .edge-handle,
 .edge-group:hover .edge-tag,
 .edge-group.dragging .edge-handle,
 .edge-group.dragging .edge-tag,
-.edge-group.lit .edge-tag,
 #graph.show-wires .edge-handle,
 #graph.show-wires .edge-tag { opacity: 1; }
 #graph.show-wires .edge-handle { opacity: 0.85; }
