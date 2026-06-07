@@ -36,6 +36,37 @@
     LogosTension: "tension",
   };
 
+  // Approx node radius per role — used to seat the activity LEDs
+  // just outside the node, where a wire enters.
+  const NODE_R = {
+    core: 60, decision: 46, perception: 40, self: 36, adapt: 40, env: 30,
+  };
+  function nodeRadius(role) { return NODE_R[role] || 38; }
+
+  // Map a signal to a logical polarity: -1 false / 0 neutral / +1 true.
+  // (Grounded in the system's own semantics — see CONCEPTS.md.)
+  function signalPolarity(sig) {
+    switch (sig.type) {
+      case "Reaction":
+        return sig.valence > 0.1 ? 1 : (sig.valence < -0.1 ? -1 : 0);
+      case "LogosTension": {
+        // dia-ballein (presence/rational) = true, sun-ballein = false.
+        const d = sig.division || 0, u = sig.union || 0;
+        return d > u * 1.1 ? 1 : (u > d * 1.1 ? -1 : 0);
+      }
+      case "MeaningEvent":
+        // known meaning = true, highly novel (unknown) = false.
+        return sig.novelty < 0.34 ? 1 : (sig.novelty > 0.66 ? -1 : 0);
+      case "Desire":
+        return sig.confidence > 0.6 ? 1 : (sig.confidence < 0.4 ? -1 : 0);
+      case "Action":    return 1;
+      case "Push":      return sig.direction === "reactive" ? 1 : 0;
+      case "Stimulus":  return sig.is_absence ? -1 : 0;
+      case "MapUpdate": return sig.boundary ? 1 : 0;
+      default:          return 0;
+    }
+  }
+
   // Layout constants (svg coords).
   const COL_W = 200;
   const ROW_H = 130;
@@ -295,10 +326,21 @@
       const tag    = svgEl("text", { class: "edge-tag", "text-anchor": "middle" });
       const fn = SIGNAL_FN[e.via];
       tag.textContent = fn ? `${e.via} · ${fn}` : e.via;
-      group.append(hit, path, handle, tag);
+
+      // Router-style activity LEDs at the node entry:
+      // red / amber / green = false / neutral / true.
+      const led  = svgEl("g", { class: "edge-led" });
+      const ledF = svgEl("circle", { r: 2.3, cy: -5.5, class: "led led-false" });
+      const ledN = svgEl("circle", { r: 2.3, cy:  0,   class: "led led-neutral" });
+      const ledT = svgEl("circle", { r: 2.3, cy:  5.5, class: "led led-true" });
+      led.append(ledF, ledN, ledT);
+
+      group.append(hit, path, led, handle, tag);
       viewport.appendChild(group);
 
       e.group = group; e.elem = path; e.hit = hit; e.handle = handle; e.tag = tag;
+      e.led = led;
+      e.ledEls = { "-1": ledF, "0": ledN, "1": ledT };
       edgeList.push(e);
       renderEdge(e);
 
@@ -363,6 +405,16 @@
     e.handle.setAttribute("cy", p.y);
     e.tag.setAttribute("x", p.x);
     e.tag.setAttribute("y", p.y - 8);
+
+    // Seat the LED cluster just outside the target node, on the
+    // incoming segment (which arrives at b from the pivot).
+    let dx = b.x - p.x, dy = 0;            // final segment (p.x,b.y) -> b
+    if (Math.abs(dx) < 1) { dx = b.x - p.x; dy = b.y - p.y; }
+    const L = Math.hypot(dx, dy) || 1;
+    const off = nodeRadius(b.role) + 9;
+    const ex = b.x - (dx / L) * off;
+    const ey = b.y - (dy / L) * off;
+    e.led.setAttribute("transform", `translate(${ex.toFixed(1)},${ey.toFixed(1)})`);
   }
 
   function startEdgeDrag(ev, e) {
@@ -588,6 +640,7 @@
 
     const key = `${sig.origin}|${sig.type}`;
     const edges = edgeIndex[key];
+    const pol = String(signalPolarity(sig));
     if (edges) {
       for (const e of edges) {
         // Hold the active state long enough that the slow CSS
@@ -596,6 +649,15 @@
         e.elem.classList.add("active");
         if (e._timer) clearTimeout(e._timer);
         e._timer = setTimeout(() => e.elem.classList.remove("active"), 620);
+
+        // Quick, router-style blink of the activity LED whose
+        // polarity matches this signal (false / neutral / true).
+        const lit = e.ledEls && e.ledEls[pol];
+        if (lit) {
+          lit.classList.add("on");
+          if (lit._t) clearTimeout(lit._t);
+          lit._t = setTimeout(() => lit.classList.remove("on"), 150);
+        }
       }
     }
     const node = nodeById[sig.origin];

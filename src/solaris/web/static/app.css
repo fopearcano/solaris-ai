@@ -661,6 +661,22 @@ main {
   color: var(--amber);
 }
 
+/* Router-style activity LEDs at each wire's node entry:
+   red / amber / green = false / neutral / true. Dim at rest,
+   quick crisp blink on activity (non-intrusive). */
+.edge-led { pointer-events: none; }
+.led {
+  opacity: 0.13;
+  transition: opacity 0.11s ease-out, filter 0.11s ease-out;
+}
+.led-false   { fill: #ff3b30; }
+.led-neutral { fill: #ffcf2e; }
+.led-true    { fill: #2ee06a; }
+.led.on { opacity: 0.95; }
+.led-false.on   { filter: drop-shadow(0 0 3px rgba(255,59,48,0.9)); }
+.led-neutral.on { filter: drop-shadow(0 0 3px rgba(255,207,46,0.9)); }
+.led-true.on    { filter: drop-shadow(0 0 3px rgba(46,224,106,0.9)); }
+
 /* ---- node sub-module property panels ---------------------------- */
 
 .node.clickable { cursor: pointer; }
