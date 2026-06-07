@@ -13,11 +13,22 @@
 <div class="app">
 
   <header class="hud-top">
-    <span class="tab"></span>
-    <span class="hud-status">VERIFYING NEUROLOGICAL LINKUP:&nbsp; <b>CALCULATING SYNCHRONIZATION RATE</b></span>
-    <span class="hud-spacer"></span>
-    <span class="hud-time" id="timecode">00:00:00</span>
-    <span class="hud-kana">ソラリス・アイ</span>
+    <div class="hud-left">
+      <span class="tab"></span>
+      <span class="hud-status">VERIFYING NEUROLOGICAL LINKUP:&nbsp; <b>CALCULATING SYNCHRONIZATION RATE</b></span>
+    </div>
+    <div class="hud-stats">
+      <div class="stats-chips" id="stats-chips"></div>
+      <div class="stats-dd">
+        <button class="stats-menu-btn" id="stats-menu-btn"
+                title="Select resources to display" aria-label="Select resources">▦</button>
+        <div class="stats-menu" id="stats-menu" hidden></div>
+      </div>
+    </div>
+    <div class="hud-right">
+      <span class="hud-time" id="timecode">00:00:00</span>
+      <span class="hud-kana">ソラリス・アイ</span>
+    </div>
   </header>
 
   <main>

@@ -44,6 +44,7 @@ from solaris.runtime.signals import (
     Signal,
     Stimulus,
 )
+from solaris.web.resources import ResourceMonitor
 from solaris.web.topology import TOPOLOGY
 
 HERE = Path(__file__).parent
@@ -104,25 +105,49 @@ class HttpServer:
         self.clients: set[asyncio.Queue[str]] = set()
         self._server: asyncio.AbstractServer | None = None
         self._snapshot_task: asyncio.Task | None = None
+        self._resource_task: asyncio.Task | None = None
+        self.monitor = ResourceMonitor()
+        self.resources: dict = {}
 
     async def start(self) -> None:
         self.conscience.bus.subscribe_all(self._broadcast)
         self._server = await asyncio.start_server(self._handle, self.host, self.port)
         self._snapshot_task = asyncio.create_task(self._snapshot_loop())
+        self._resource_task = asyncio.create_task(self._resource_loop())
 
     async def stop(self) -> None:
-        if self._snapshot_task is not None:
-            self._snapshot_task.cancel()
-            try:
-                await self._snapshot_task
-            except asyncio.CancelledError:
-                pass
+        for task in (self._snapshot_task, self._resource_task):
+            if task is not None:
+                task.cancel()
+                try:
+                    await task
+                except asyncio.CancelledError:
+                    pass
         if self._server is not None:
             self._server.close()
             try:
                 await self._server.wait_closed()
             except Exception:
                 pass
+
+    def _payload(self) -> dict:
+        snap = self.conscience.snapshot()
+        snap["resources"] = self.resources
+        return snap
+
+    async def _resource_loop(self) -> None:
+        # Sample once a second; run the (occasionally blocking) sampler
+        # in a thread so it never stalls the event loop.
+        loop = asyncio.get_running_loop()
+        try:
+            while True:
+                try:
+                    self.resources = await loop.run_in_executor(None, self.monitor.sample)
+                except Exception:  # noqa: BLE001
+                    pass
+                await asyncio.sleep(1.0)
+        except asyncio.CancelledError:
+            return
 
     # ---- SSE plumbing -------------------------------------------------
 
@@ -141,8 +166,7 @@ class HttpServer:
         try:
             while True:
                 await asyncio.sleep(self.snapshot_period)
-                snap = self.conscience.snapshot()
-                msg = json.dumps({"event": "snapshot", "data": snap}, default=str)
+                msg = json.dumps({"event": "snapshot", "data": self._payload()}, default=str)
                 for q in list(self.clients):
                     try:
                         q.put_nowait(msg)
@@ -249,7 +273,7 @@ class HttpServer:
             # Initial snapshot so the UI does not start blank.
             initial = json.dumps({
                 "event": "snapshot",
-                "data": self.conscience.snapshot(),
+                "data": self._payload(),
             }, default=str)
             writer.write(f"data: {initial}\n\n".encode("utf-8"))
             await writer.drain()

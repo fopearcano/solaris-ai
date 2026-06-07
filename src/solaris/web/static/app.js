@@ -95,6 +95,39 @@
   const expanded = new Set();
   const propPanels = {};
 
+  // Top-centre resource stats. `def` = shown by default; the rest
+  // are selectable from the dropdown. fmt() -> string, or null when
+  // the metric is unavailable on this host.
+  const METRICS = [
+    { id: "cpu",     label: "CPU",  def: true,
+      fmt: (r) => r.cpu  ? `${r.cpu.pct}%` : null,
+      tip: (r) => r.cpu  ? `process CPU · ${r.cpu.per_core}% of ${r.cpu.cores} cores` : "" },
+    { id: "ram",     label: "RAM",  def: true,
+      fmt: (r) => r.ram  ? `${r.ram.mb}MB` : null,
+      tip: (r) => r.ram && r.ram.pct != null ? `${r.ram.pct}% of system RAM` : "resident memory" },
+    { id: "gpu",     label: "GPU",  def: true,
+      fmt: (r) => r.gpu  ? `${r.gpu.pct}%` : null,
+      tip: (r) => r.gpu  ? `${r.gpu.mem_mb}MB GPU memory` : "no NVIDIA GPU detected" },
+    { id: "net",     label: "NET",  def: true,
+      fmt: (r) => r.net  ? `↓${r.net.down_kbps} ↑${r.net.up_kbps}` : null,
+      tip: () => "network KB/s (system)" },
+    { id: "disk",    label: "DISK", def: false,
+      fmt: (r) => r.disk ? `↓${r.disk.read_kbps} ↑${r.disk.write_kbps}` : null,
+      tip: () => "disk I/O KB/s (process)" },
+    { id: "threads", label: "THR",  def: false,
+      fmt: (r) => r.threads != null ? `${r.threads}` : null,
+      tip: () => "OS threads" },
+    { id: "fds",     label: "FD",   def: false,
+      fmt: (r) => r.fds != null ? `${r.fds}` : null,
+      tip: () => "open file descriptors" },
+    { id: "load",    label: "LOAD", def: false,
+      fmt: (r) => r.load ? `${r.load["1"]}` : null,
+      tip: (r) => r.load ? `load avg 1/5/15: ${r.load["1"]} ${r.load["5"]} ${r.load["15"]}` : "" },
+  ];
+  let lastResources = {};
+  let selectedStats = null;
+  let statsChips, statsMenu, statsMenuBtn;
+
   // Zoom + pan state (in SVG-viewBox units).
   let zoom = 1;
   let pan = { x: 0, y: 0 };
@@ -735,6 +768,11 @@
         vitalSync.textContent = `${(being * 100).toFixed(1)}%`;
       }
     }
+    // Real-time resource stats in the HUD top bar.
+    if (snap.resources) {
+      lastResources = snap.resources;
+      renderStats();
+    }
     // Keep any open sub-module panels current.
     lastSnap = snap;
     for (const id of expanded) {
@@ -801,6 +839,84 @@
     setInterval(tick, 1000);
   }
 
+  // ---- top-centre resource stats -------------------------------------
+
+  function renderStats() {
+    if (!statsChips) return;
+    statsChips.textContent = "";
+    for (const m of METRICS) {
+      if (!selectedStats.has(m.id)) continue;
+      const v = m.fmt(lastResources);
+      const chip = document.createElement("span");
+      chip.className = "stat";
+      chip.title = (m.tip && m.tip(lastResources)) || m.label;
+      const k = document.createElement("i");
+      k.className = "stat-k";
+      k.textContent = m.label;
+      const val = document.createElement("b");
+      val.className = "stat-v" + (v == null ? " dim" : "");
+      val.textContent = v == null ? "—" : v;
+      chip.append(k, val);
+      statsChips.appendChild(chip);
+    }
+  }
+
+  function attachStats() {
+    statsChips   = document.getElementById("stats-chips");
+    statsMenu    = document.getElementById("stats-menu");
+    statsMenuBtn = document.getElementById("stats-menu-btn");
+
+    let saved = null;
+    try { saved = JSON.parse(localStorage.getItem("solaris.stats") || "null"); } catch {}
+    selectedStats = new Set(
+      Array.isArray(saved) && saved.length
+        ? saved
+        : METRICS.filter((m) => m.def).map((m) => m.id),
+    );
+
+    const title = document.createElement("div");
+    title.className = "stats-menu-title";
+    title.textContent = "RESOURCES";
+    statsMenu.appendChild(title);
+    for (const m of METRICS) {
+      const lab = document.createElement("label");
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = selectedStats.has(m.id);
+      cb.addEventListener("change", () => {
+        if (cb.checked) selectedStats.add(m.id);
+        else selectedStats.delete(m.id);
+        try {
+          localStorage.setItem("solaris.stats", JSON.stringify([...selectedStats]));
+        } catch {}
+        renderStats();
+      });
+      const span = document.createElement("span");
+      span.textContent = m.label;
+      lab.append(cb, span);
+      statsMenu.appendChild(lab);
+    }
+
+    statsMenuBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const open = !statsMenu.hasAttribute("hidden");
+      if (open) {
+        statsMenu.setAttribute("hidden", "");
+        statsMenuBtn.classList.remove("on");
+      } else {
+        statsMenu.removeAttribute("hidden");
+        statsMenuBtn.classList.add("on");
+      }
+    });
+    document.addEventListener("click", (e) => {
+      if (!statsMenu.contains(e.target) && e.target !== statsMenuBtn) {
+        statsMenu.setAttribute("hidden", "");
+        statsMenuBtn.classList.remove("on");
+      }
+    });
+    renderStats();
+  }
+
   function attachControls() {
     vitalAge    = document.getElementById("vital-age");
     vitalAlive  = document.getElementById("vital-alive");
@@ -857,6 +973,7 @@
     const resp = await fetch("/topology");
     topology = await resp.json();
     attachControls();
+    attachStats();
     buildGraph();
     attachZoom();
     buildStateCards();
