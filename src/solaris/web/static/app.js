@@ -129,6 +129,7 @@
   let lastResources = {};
   let selectedStats = null;
   let statsChips, statsMenu, statsMenuBtn;
+  let warnResolver = null;
 
   // Zoom + pan state (in SVG-viewBox units).
   let zoom = 1;
@@ -1057,6 +1058,16 @@
 
     const post = (path) => fetch(path, { method: "POST" });
 
+    // Drastic-action warning modal (the Console keeps deep control).
+    const warnModal = document.getElementById("warn-modal");
+    const closeWarn = (ok) => {
+      warnModal.setAttribute("hidden", "");
+      if (warnResolver) { warnResolver(ok); warnResolver = null; }
+    };
+    document.getElementById("warn-confirm").addEventListener("click", () => closeWarn(true));
+    document.getElementById("warn-cancel").addEventListener("click", () => closeWarn(false));
+    warnModal.addEventListener("click", (e) => { if (e.target === warnModal) closeWarn(false); });
+
     document.getElementById("negate").addEventListener("click", async () => {
       const r = await fetch("/negate", {
         method: "POST",
@@ -1068,17 +1079,32 @@
       else systemMessage(`NO: ${d.error || "failed"}`);
     });
 
+    // Reversible actions: no warning.
     document.getElementById("sleep").addEventListener("click", () => post("/sleep"));
     document.getElementById("wake").addEventListener("click", () => post("/wake"));
-    document.getElementById("activate").addEventListener("click", () => post("/activate"));
 
+    // Drastic actions: warn first. The Console is the deep control.
+    document.getElementById("activate").addEventListener("click", async () => {
+      if (await showWarning(
+        "ACTIVATE — survival override (prey–predator): raises arousal, lowers " +
+        "thresholds, and SUSPENDS Limitations. Use sparingly.")) await post("/activate");
+    });
     document.getElementById("reborn").addEventListener("click", async () => {
-      if (!confirm("Reborn? The current life dies and a NEW one starts from 0.")) return;
-      await post("/reborn");
+      if (await showWarning(
+        "REBORN — the current life DIES and a NEW individual starts from 0. " +
+        "This is not a resume; memory, e.Links and Limitations are wiped.")) await post("/reborn");
     });
     document.getElementById("die").addEventListener("click", async () => {
-      if (!confirm("Trigger Lifecycle.die? The Conscience will stop.")) return;
-      await post("/die");
+      if (await showWarning(
+        "DIE — brain death. The Conscience stops until a Reborn.")) await post("/die");
+    });
+  }
+
+  function showWarning(message) {
+    return new Promise((resolve) => {
+      document.getElementById("warn-msg").textContent = message;
+      document.getElementById("warn-modal").removeAttribute("hidden");
+      warnResolver = resolve;
     });
   }
 

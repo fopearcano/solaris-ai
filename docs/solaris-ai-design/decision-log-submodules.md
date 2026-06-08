@@ -36,6 +36,16 @@ them.
 27. Implement **Actions + SIC→RO now**; NO/e.Link landed too (Q12–14 settled by
     defaults).
 
+## Addendum — guarding + the destiny of NO
+- **Guarded buttons.** The on-screen drastic actions (Activate, Reborn, Die)
+  now raise a warning modal; the **Console** is the authoritative deep control.
+  Buttons are kept functional ("leave all like this, but with a warning").
+- **NO is to become environment-built.** Refinement recorded in
+  `sub-modules.md` §C.5: operator-NO is a Contact/human-mirror scaffold; the
+  Becoming target (Lem's-Solaris-alike, alien intelligence) is **NO built by the
+  system's automatic survival-relation with its own (differently-shaped)
+  environment** — *NO function = the relationship intelligence ↔ environment*.
+
 ## Console (Group D) — deferred
 The Console is added in a later round. Defaults recorded: control everything
 except save/load (forbidden on principle — no resurrection, Q21); read+write;

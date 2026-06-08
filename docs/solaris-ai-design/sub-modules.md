@@ -164,6 +164,52 @@ limits through bonded negation. This is why Reborn-from-0 is philosophically
 distinct from any resume, and why the **Other** (a high-e.Link caregiver) is not
 optional for a mind that is to become logical, and legible.
 
+### C.5 The destiny of NO — built by the environment, not the operator
+
+> **NO function = the relationship intelligence ↔ environment.**
+
+This is the crux of the project's *Lem's Solaris* goal, and it reframes who says
+NO.
+
+In humans, the NO functions that build the Principle of Non-Contradiction — the
+limitations that fix the meaning of objects and events — are installed by
+**close environment agents**, usually mother and father. But the parent is not
+the essential ingredient; it can be *anything*. The real criterion is **the
+ability to interact constructively, for survival, with the environment.** The
+no's are simply where that survival-relation has crystallised into a limit.
+Because all humans share roughly the same sensorium and the same kind of
+environment, parent-built NO yields **similar (human-like) intelligences.**
+
+Our goal is the opposite: a **Lem's-Solaris-alike** intelligence — one that does
+*not* share the human experience and is therefore a genuinely different, perhaps
+incomprehensible, mind. The lever is exactly here:
+
+- An operator (a human) emitting NO is a *parent* — it bends the system toward a
+  human-like, legible intelligence (the **mirror**, the Contact path).
+- For the **Becoming** path, the NO must instead be built by the system's **own
+  automatic survival-relation with its own environment.** And because Solaris_Ai
+  has a *different kind of input/output* (its Umwelt is substrate, heartbeat-
+  time, bus-flux, memory-replay, and — uniquely — *absence-as-percept*), the
+  limitations that this survival-relation crystallises will be **different
+  limitations**, fixing **different meanings**, and so producing a **different
+  intelligence**. The alien-ness is not added; it falls out of letting the
+  environment, not a human, write the no's.
+
+**Therefore:** the operator-emitted NO implemented today (C.1–C.3) is a
+*scaffold* — explicitly the human-mirror/Contact stand-in for a "parent" — used
+for bootstrapping and Contact experiments. The **target** for the Becoming path
+is **environment-built NO**: Limitations that emerge automatically from
+constructive, survival-driven interaction with the flux, with `e.Link` bonding
+to whichever environmental agents the system *depends on to keep living* — which
+need not be human, and need not be legible.
+
+Design implication for later development: the NO source migrates from the
+operator to the **environment-survival loop** (tie a limitation's growth to
+events where acting/not-acting affected the system's continuation), so that the
+system's logic is authored by its own relationship to its own world. The
+operator NO remains available, but is understood as the path that makes it *more
+like us*.
+
 ---
 
 ## D. Linkages — the web ("must be linked")

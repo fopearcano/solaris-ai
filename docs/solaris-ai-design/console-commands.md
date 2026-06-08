@@ -79,6 +79,13 @@ Common parameters: `aion.period`, `aion.silence_threshold`, `logos.decay`,
 - **Same surface, two faces.** Everything the buttons do, the console does, plus
   parameter tuning, pause/resume, and inspection — the buttons are shortcuts
   over this surface.
+- **The Console is the deep-control authority.** The on-screen action buttons are
+  *guarded*: the drastic ones (Activate, Reborn, Die) raise a warning modal that
+  points back here, because routine UI clicks should not casually end or reset a
+  life. The Console is the authoritative interface for drastic, deep control —
+  and is itself the place where, later, control may be restricted/authenticated.
+  (The Console commands are currently unguarded by design: deep control assumes
+  intent.)
 
 ## Examples
 

@@ -108,10 +108,11 @@
     <div class="control-group actions">
       <button id="sleep" title="Enter Dream-Sleep (oMBA + oTD)">Sleep</button>
       <button id="wake" title="Re-Gain — push to the post-sleep state">Re-Gain</button>
-      <button id="activate" class="warn" title="Survival Push (prey–predator)">Activate</button>
-      <button id="reborn" title="A new life from 0 (not a resume)">Reborn</button>
-      <button id="die" class="danger">Die</button>
+      <button id="activate" class="warn" title="Survival Push (prey–predator) — drastic">Activate</button>
+      <button id="reborn" title="A new life from 0 (not a resume) — drastic">⚠ Reborn</button>
+      <button id="die" class="danger" title="Brain death — drastic">⚠ Die</button>
     </div>
+    <span class="warn-chip" title="Buttons are guarded; the Console has authoritative deep control">⚠ deep control → Console <b>&gt;_</b></span>
     <span class="control-hint">actions: Sleep · Re-Gain · Activate · Reborn · Die · NO — click a node for sub-modules · drag a wire to re-route</span>
   </section>
 
@@ -120,6 +121,19 @@
     <ul id="trace-log"></ul>
   </section>
 
+</div>
+
+<div class="warn-modal" id="warn-modal" hidden>
+  <div class="warn-box">
+    <div class="warn-title">⚠ DRASTIC ACTION</div>
+    <div class="warn-msg" id="warn-msg"></div>
+    <div class="warn-note">These on-screen controls are guarded. Authoritative, deep
+      control of the system is the <b>Console</b> (the <b>&gt;_</b> button, or press <b>`</b>).</div>
+    <div class="warn-actions">
+      <button id="warn-cancel">Cancel</button>
+      <button id="warn-confirm" class="danger">Proceed anyway</button>
+    </div>
+  </div>
 </div>
 
 <script src="/app.js"></script>

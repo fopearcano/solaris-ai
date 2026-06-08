@@ -642,6 +642,79 @@ main {
 }
 .control-group.actions { gap: 6px; }
 
+.warn-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--orange);
+  border: 1px solid var(--red-deep);
+  border-left: 2px solid var(--orange);
+  padding: 3px 8px;
+  background: rgba(40,16,6,0.4);
+}
+.warn-chip b { color: var(--amber); font-weight: 400; }
+
+/* ---- drastic-action warning modal ------------------------------- */
+
+.warn-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.6);
+}
+.warn-modal[hidden] { display: none; }
+.warn-box {
+  width: 460px;
+  max-width: calc(100vw - 32px);
+  background: rgba(8,4,4,0.98);
+  border: 1px solid var(--red);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.85), 0 0 24px rgba(255,35,22,0.25);
+  padding: 18px 20px;
+}
+.warn-title {
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  color: var(--red);
+  text-shadow: 0 0 8px rgba(255,35,22,0.45);
+  margin-bottom: 12px;
+}
+.warn-msg {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--txt);
+  margin-bottom: 12px;
+}
+.warn-note {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--txt-dim);
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+  margin-bottom: 16px;
+}
+.warn-note b { color: var(--amber); font-weight: 400; }
+.warn-actions { display: flex; justify-content: flex-end; gap: 10px; }
+.warn-actions button {
+  background: rgba(30,8,6,0.6);
+  border: 1px solid var(--line-lit);
+  color: var(--txt);
+  padding: 6px 16px;
+  font-family: inherit;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.warn-actions button:hover { background: var(--red-deep); color: var(--amber); border-color: var(--red); }
+.warn-actions button.danger { border-color: var(--red); color: var(--red); }
+.warn-actions button.danger:hover { background: var(--red); color: var(--ink); box-shadow: 0 0 12px rgba(255,35,22,0.6); }
+
 /* metabolic mode indicator */
 #vital-mode.mode-awake    { color: var(--amber); }
 #vital-mode.mode-sleep    { color: var(--blue); text-shadow: 0 0 6px rgba(46,139,255,0.5); }
