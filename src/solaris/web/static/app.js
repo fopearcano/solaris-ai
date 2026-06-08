@@ -83,9 +83,11 @@
 
   let svg, viewport, traceList, stateEl;
   let vitalAge, vitalAlive, vitalCount, vitalEvents, vitalSync, timecodeEl;
+  let vitalMode, vitalArousal;
   let zoomLevelEl;
   let eventCount = 0;
   let bornAt = performance.now();
+  let lastAge = 0;
 
   // Wires + sub-module panels.
   let lastSnap = null;
@@ -745,13 +747,34 @@
 
   function applySnapshot(snap) {
     if (!snap || !snap.lifecycle) return;
-    vitalAge.textContent = `${(snap.lifecycle.age_s ?? 0).toFixed(1)}s`;
+    const age = snap.lifecycle.age_s ?? 0;
+    // Reborn detection: a new life resets age toward 0.
+    if (age < lastAge - 1) {
+      eventCount = 0;
+      if (vitalEvents) vitalEvents.textContent = "0";
+      if (traceList) traceList.textContent = "";
+      systemMessage("reborn — a new life from 0");
+    }
+    lastAge = age;
+    vitalAge.textContent = `${age.toFixed(1)}s`;
     if (snap.lifecycle.alive) {
       vitalAlive.textContent = "ACTIVE";
       vitalAlive.className = "alive";
     } else {
       vitalAlive.textContent = "OFFLINE";
       vitalAlive.className = "dead";
+    }
+    // Metabolic mode + arousal.
+    if (snap.metabolism && vitalMode) {
+      const meta = snap.metabolism;
+      const label = meta.activated
+        ? "ACTIVE!"
+        : (meta.state === "dream_sleep" ? "DREAM-SLEEP" : "AWAKE");
+      vitalMode.textContent = label;
+      vitalMode.className = meta.activated
+        ? "mode-activate"
+        : (meta.state === "dream_sleep" ? "mode-sleep" : "mode-awake");
+      if (vitalArousal) vitalArousal.textContent = (meta.arousal ?? 0).toFixed(2);
     }
     if (snap.modules) {
       vitalCount.textContent = `${Object.keys(snap.modules).length}`;
@@ -918,13 +941,15 @@
   }
 
   function attachControls() {
-    vitalAge    = document.getElementById("vital-age");
-    vitalAlive  = document.getElementById("vital-alive");
-    vitalCount  = document.getElementById("vital-count");
-    vitalEvents = document.getElementById("vital-events");
-    vitalSync   = document.getElementById("vital-sync");
-    timecodeEl  = document.getElementById("timecode");
-    traceList   = document.getElementById("trace-log");
+    vitalAge     = document.getElementById("vital-age");
+    vitalAlive   = document.getElementById("vital-alive");
+    vitalCount   = document.getElementById("vital-count");
+    vitalEvents  = document.getElementById("vital-events");
+    vitalSync    = document.getElementById("vital-sync");
+    vitalMode    = document.getElementById("vital-mode");
+    vitalArousal = document.getElementById("vital-arousal");
+    timecodeEl   = document.getElementById("timecode");
+    traceList    = document.getElementById("trace-log");
 
     document.getElementById("stim-form")
       .addEventListener("submit", async (e) => {
@@ -945,9 +970,30 @@
     document.getElementById("react-pos").addEventListener("click", () => react( 0.7));
     document.getElementById("react-neg").addEventListener("click", () => react(-0.8));
 
+    const post = (path) => fetch(path, { method: "POST" });
+
+    document.getElementById("negate").addEventListener("click", async () => {
+      const r = await fetch("/negate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: "{}",
+      });
+      const d = await r.json().catch(() => ({}));
+      if (d.ok) systemMessage(`NO → ${d.meaning} (limit ${d.strength})`);
+      else systemMessage(`NO: ${d.error || "failed"}`);
+    });
+
+    document.getElementById("sleep").addEventListener("click", () => post("/sleep"));
+    document.getElementById("wake").addEventListener("click", () => post("/wake"));
+    document.getElementById("activate").addEventListener("click", () => post("/activate"));
+
+    document.getElementById("reborn").addEventListener("click", async () => {
+      if (!confirm("Reborn? The current life dies and a NEW one starts from 0.")) return;
+      await post("/reborn");
+    });
     document.getElementById("die").addEventListener("click", async () => {
       if (!confirm("Trigger Lifecycle.die? The Conscience will stop.")) return;
-      await fetch("/die", { method: "POST" });
+      await post("/die");
     });
   }
 

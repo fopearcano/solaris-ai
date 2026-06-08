@@ -22,8 +22,20 @@ Decision rule:
 action_threshold is a *rewriteable* parameter — Auto-Regeneration
 adjusts it based on Backpropagation feedback.
 
+SIC -> RO (Specific Input Consequence -> Relevant Output): every
+committed Action is *typed* — physical / mental / physicomental —
+via a small SIC table keyed on modality (operator-seeded, Habit-
+reweighted). A `physical` (or physicomental) act performs a tiny,
+bounded, real computation on the substrate, so it shows up in the
+resource stats: the body acting on its own body. Relevance is an
+entropy quantity: Logos-fracture x SIC-determinacy.
+
+Limitations from Negation ("NO") *filter* RO: a forbidden meaning's
+Desire dies before becoming an Action (unless Activate suspends the
+Limitation).
+
 Subscribes to: MeaningEvent, Push.
-Publishes:     Desire, Action.
+Publishes:     Desire, Action (typed).
 """
 
 from __future__ import annotations
@@ -32,6 +44,17 @@ import time
 
 from solaris.modules.base import Module
 from solaris.runtime.signals import Action, Desire, MeaningEvent, Push
+
+# SIC seed: modality -> Relevant-Output type. Default is "mental".
+SIC_SEED: dict[str, str] = {
+    "threat":   "physical",        # survival acts on the world
+    "tactile":  "physical",
+    "external": "physical",
+    "vision":   "mental",
+    "audio":    "physicomental",   # heard -> uttered
+    "absence":  "mental",
+    "oneiric":  "mental",          # dreams act inwardly
+}
 
 
 class IOModule(Module):
@@ -46,13 +69,37 @@ class IOModule(Module):
         super().__init__(conscience)
         self.action_threshold = action_threshold
         self.window = window
+        self.sic: dict[str, str] = dict(SIC_SEED)
         self._last_meaning: MeaningEvent | None = None
         self._last_push: Push | None = None
         self.state = {
             "desires": 0,
             "actions": 0,
+            "forbidden": 0,
             "action_threshold": action_threshold,
         }
+
+    def set_sic(self, modality: str, output_type: str) -> None:
+        """Operator override of a SIC binding."""
+        self.sic[modality] = output_type
+
+    def _output_type(self, meaning: str) -> tuple[str, float]:
+        """Return (output_type, sic_determinacy) for a meaning.
+
+        meaning is '{modality}/{type}/{body}' or 'self.exists'.
+        """
+        modality = meaning.split("/", 1)[0]
+        if modality in self.sic:
+            return self.sic[modality], 1.0
+        return "mental", 0.5
+
+    @staticmethod
+    def _perform_physical() -> None:
+        """A tiny, bounded substrate act — real CPU, harmless, visible."""
+        total = 0
+        for i in range(20000):
+            total += i * i
+        return None
 
     async def start(self) -> None:
         self.bus.subscribe(MeaningEvent, self._on_meaning)
@@ -89,17 +136,32 @@ class IOModule(Module):
         self.state["action_threshold"] = round(self.action_threshold, 3)
         await self.bus.publish(desire)
 
-        if motivation * confidence >= self.action_threshold:
+        # Negation ("NO") filters RO: a forbidden meaning's Desire
+        # dies before becoming an Action (unless Activate suspends it).
+        neg = getattr(self.conscience, "negation", None)
+        forbidden = neg is not None and neg.is_forbidden(m.meaning)
+
+        if not forbidden and motivation * confidence >= self.action_threshold:
+            out_type, determinacy = self._output_type(m.meaning)
+            if out_type in ("physical", "physicomental"):
+                self._perform_physical()
+            # Relevance is an entropy quantity: fracture x SIC-determinacy.
+            fracture = self.conscience.logos.state.get("fracture", 0.0)
+            relevance = round(fracture * determinacy, 3)
             action = Action(
                 origin=self.name,
                 name=desire.proposal,
                 payload={
                     "motivation": round(motivation, 3),
                     "confidence": round(confidence, 3),
+                    "output_type": out_type,
+                    "relevance": relevance,
                 },
             )
             self.state["actions"] += 1
             await self.bus.publish(action)
+        elif forbidden:
+            self.state["forbidden"] += 1
 
         # Consume the pair so the same stimulus is not turned into
         # multiple Desires.

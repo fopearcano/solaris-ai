@@ -535,6 +535,21 @@ main {
   color: var(--ink);
   box-shadow: 0 0 12px rgba(255,35,22,0.7);
 }
+.controls button.warn {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+.controls button.warn:hover {
+  background: var(--orange);
+  color: var(--ink);
+  box-shadow: 0 0 12px rgba(255,126,41,0.6);
+}
+.control-group.actions { gap: 6px; }
+
+/* metabolic mode indicator */
+#vital-mode.mode-awake    { color: var(--amber); }
+#vital-mode.mode-sleep    { color: var(--blue); text-shadow: 0 0 6px rgba(46,139,255,0.5); }
+#vital-mode.mode-activate { color: var(--red);  text-shadow: 0 0 6px rgba(255,35,22,0.6); }
 
 .control-group { display: flex; gap: 6px; }
 .control-hint  {

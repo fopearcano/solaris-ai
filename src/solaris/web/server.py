@@ -240,6 +240,17 @@ class HttpServer:
             await self._handle_react(body, writer)
         elif method == "POST" and path == "/die":
             await self._handle_die(writer)
+        elif method == "POST" and path == "/sleep":
+            await self._handle_action(writer, self.conscience.sleep)
+        elif method == "POST" and path == "/wake":
+            await self._handle_action(writer, self.conscience.wake)
+        elif method == "POST" and path == "/activate":
+            await self._handle_action(
+                writer, lambda: self.conscience.activate("operator"))
+        elif method == "POST" and path == "/reborn":
+            await self._handle_reborn(writer)
+        elif method == "POST" and path == "/negate":
+            await self._handle_negate(body, writer)
         else:
             self._send(writer, 404, "text/plain", b"not found")
             await writer.drain()
@@ -344,6 +355,56 @@ class HttpServer:
         await writer.drain()
         if self.conscience.lifecycle.alive:
             asyncio.create_task(self.conscience.death(cause="die button"))
+
+    async def _handle_action(self, writer, coro_fn) -> None:
+        """Generic alive-guarded action (sleep / wake / activate)."""
+        if not self.conscience.lifecycle.alive:
+            self._send(writer, 409, "application/json",
+                       b'{"ok":false,"error":"system is dead"}')
+            await writer.drain()
+            return
+        await coro_fn()
+        self._send(writer, 200, "application/json", b'{"ok":true}')
+        await writer.drain()
+
+    async def _handle_reborn(self, writer: asyncio.StreamWriter) -> None:
+        # Respond first; rebirth replaces the Bus, so re-attach our
+        # broadcast subscription to the new one afterwards.
+        self._send(writer, 200, "application/json", b'{"ok":true}')
+        await writer.drain()
+        await self.conscience.reborn()
+        self.conscience.bus.subscribe_all(self._broadcast)
+
+    async def _handle_negate(self, body: bytes, writer: asyncio.StreamWriter) -> None:
+        try:
+            data = json.loads(body) if body else {}
+        except json.JSONDecodeError:
+            data = {}
+        if not self.conscience.lifecycle.alive:
+            self._send(writer, 409, "application/json",
+                       b'{"ok":false,"error":"system is dead"}')
+            await writer.drain()
+            return
+        meaning = data.get("meaning")
+        if not meaning:
+            # Operator says NO to the most recent meaning.
+            last = next(
+                (s for s in reversed(self.conscience.bus.trace)
+                 if isinstance(s, MeaningEvent)),
+                None,
+            )
+            meaning = last.meaning if last else None
+        if not meaning:
+            self._send(writer, 200, "application/json",
+                       b'{"ok":false,"error":"no meaning yet"}')
+            await writer.drain()
+            return
+        strength = await self.conscience.negate(
+            meaning, source=str(data.get("source", "environment")))
+        self._send(writer, 200, "application/json",
+                   json.dumps({"ok": True, "meaning": meaning,
+                               "strength": round(strength, 3)}).encode())
+        await writer.drain()
 
     @staticmethod
     def _send(

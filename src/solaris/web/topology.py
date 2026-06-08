@@ -42,6 +42,9 @@ MODULES: list[dict] = [
     {"id": "anticipation",           "row": 1,  "col": 4, "role": "perception", "label": "Anticipation"},
     {"id": "mysterium",              "row": 1,  "col": 6, "role": "perception", "label": "Mysterium"},
 
+    {"id": "metabolism",             "row": 0,  "col": 6, "role": "decision",   "label": "Metabolism"},
+    {"id": "negation",               "row": 2,  "col": 6, "role": "self",       "label": "Negation"},
+
     {"id": "io_module",              "row": 2,  "col": 1, "role": "decision",   "label": "I/O"},
     {"id": "uncertainty",            "row": 2,  "col": 2, "role": "decision",   "label": "Uncertainty"},
     {"id": "habit",                  "row": 2,  "col": 4, "role": "decision",   "label": "Habit"},
@@ -146,6 +149,19 @@ EDGES: list[dict] = [
     {"from": "environment", "to": "habit",           "via": "Reaction"},
     {"from": "environment", "to": "backpropagation", "via": "Reaction"},
     {"from": "environment", "to": "language",        "via": "Reaction"},
+
+    # Metabolism — oniric (dream) stimuli flow during sleep (oTD)
+    {"from": "metabolism", "to": "cognition",        "via": "Stimulus"},
+    {"from": "metabolism", "to": "memory_senses",    "via": "Stimulus"},
+    {"from": "metabolism", "to": "ego",              "via": "Stimulus"},
+    {"from": "metabolism", "to": "language",         "via": "Stimulus"},
+
+    # Negation — e.Link grows from interaction; NO writes Limitations
+    {"from": "environment", "to": "negation",            "via": "Stimulus"},
+    {"from": "environment", "to": "negation",            "via": "Reaction"},
+    {"from": "negation",    "to": "inner_map",            "via": "MapUpdate"},
+    {"from": "negation",    "to": "dimensional_comparison", "via": "MapUpdate"},
+    {"from": "negation",    "to": "language",            "via": "MapUpdate"},
 ]
 
 

@@ -137,3 +137,20 @@ class LogosTension(Signal):
     @property
     def fracture(self) -> float:
         return abs(self.division - self.union)
+
+
+@dataclass
+class MetabolicState(Signal):
+    """The system's metabolic / volitional mode.
+
+    state:    'awake' | 'dream_sleep' | 'dead'
+    arousal:  0..1, the activation level (drives auto sleep / wake)
+    substate: '' | 'dream' | 'activate'
+    activated: True while in survival (prey-predator) mode.
+    """
+
+    state: str = "awake"
+    arousal: float = 0.5
+    substate: str = ""
+    activated: bool = False
+

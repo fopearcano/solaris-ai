@@ -45,6 +45,8 @@
         <span class="v-row"><i>MODULES</i><strong id="vital-count">0</strong></span>
         <span class="v-row"><i>EVENTS</i><strong id="vital-events">0</strong></span>
         <span class="v-row sync"><i>SYNC&nbsp;RATE</i><strong id="vital-sync">0.0%</strong></span>
+        <span class="v-row"><i>MODE</i><strong id="vital-mode" class="mode-awake">AWAKE</strong></span>
+        <span class="v-row"><i>AROUSAL</i><strong id="vital-arousal">0.55</strong></span>
       </div>
 
       <svg id="graph" viewBox="0 0 1500 800" preserveAspectRatio="xMidYMid meet"></svg>
@@ -85,9 +87,16 @@
     <div class="control-group">
       <button id="react-pos">React +0.7</button>
       <button id="react-neg">React −0.8</button>
+      <button id="negate" title="Say NO to the most recent meaning — builds a Limitation through bond">NO</button>
     </div>
-    <button id="die" class="danger">Die</button>
-    <span class="control-hint">click a node for sub-modules · drag a wire to re-route · ⌗ tags · node LEDs blink line activity (red/amber/green = false/neutral/true)</span>
+    <div class="control-group actions">
+      <button id="sleep" title="Enter Dream-Sleep (oMBA + oTD)">Sleep</button>
+      <button id="wake" title="Re-Gain — push to the post-sleep state">Re-Gain</button>
+      <button id="activate" class="warn" title="Survival Push (prey–predator)">Activate</button>
+      <button id="reborn" title="A new life from 0 (not a resume)">Reborn</button>
+      <button id="die" class="danger">Die</button>
+    </div>
+    <span class="control-hint">actions: Sleep · Re-Gain · Activate · Reborn · Die · NO — click a node for sub-modules · drag a wire to re-route</span>
   </section>
 
   <section class="trace brackets">

@@ -87,6 +87,9 @@ SCHEMATIC_POSITIONS: dict[str, tuple[float, float]] = {
     "auto_regeneration":      (590, 1620),
     "complexity":             (770, 1620),
     "language":               (940, 1620),
+    # Metabolic + Negation sub-modules.
+    "metabolism":             (1180, 1210),
+    "negation":               (1180, 1500),
 }
 
 
@@ -135,6 +138,8 @@ MODULE_DESC = {
     "auto_regeneration":      "self-rewriting",
     "complexity":             "escape sub-process",
     "language":               "wildcard renderer",
+    "metabolism":             "wake / sleep / survival",
+    "negation":               "the NO · limits",
 }
 
 # ---------------------------------------------------------------------- helpers

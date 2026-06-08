@@ -14,6 +14,7 @@ from solaris.runtime.signals import (
     LogosTension,
     MapUpdate,
     MeaningEvent,
+    MetabolicState,
     Push,
     Reaction,
     Signal,
@@ -32,4 +33,5 @@ __all__ = [
     "MeaningEvent",
     "MapUpdate",
     "LogosTension",
+    "MetabolicState",
 ]
