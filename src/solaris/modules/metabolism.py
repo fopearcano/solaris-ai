@@ -154,6 +154,8 @@ class Metabolism(Module):
         try:
             while self.conscience.lifecycle.alive:
                 await asyncio.sleep(self.period)
+                if not self.enabled:
+                    continue
                 now = time.monotonic()
 
                 if self.mode == "awake":

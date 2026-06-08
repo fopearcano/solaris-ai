@@ -90,6 +90,8 @@ class AionImpulse(Module):
         try:
             while self.conscience.lifecycle.alive:
                 await asyncio.sleep(self.period)
+                if not self.enabled:
+                    continue
                 self.state["beats"] += 1
                 # Continuity push: the system never goes inert.
                 await self.bus.publish(Push(

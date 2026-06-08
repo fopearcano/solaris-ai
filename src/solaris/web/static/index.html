@@ -24,12 +24,28 @@
                 title="Select resources to display" aria-label="Select resources">▦</button>
         <div class="stats-menu" id="stats-menu" hidden></div>
       </div>
+      <button class="console-btn" id="console-toggle"
+              title="Console — control the entire system">&gt;_</button>
     </div>
     <div class="hud-right">
       <span class="hud-time" id="timecode">00:00:00</span>
       <span class="hud-kana">ソラリス・アイ</span>
     </div>
   </header>
+
+  <div class="console-panel" id="console-panel" hidden>
+    <div class="console-head">
+      <span class="console-title">◢ CONSOLE</span>
+      <span class="console-hint">verb-first · type <b>help</b> · ↑↓ history · Esc to close</span>
+      <button id="console-close" title="Close">✕</button>
+    </div>
+    <div class="console-out" id="console-out"></div>
+    <div class="console-inputline">
+      <span class="console-prompt">&gt;</span>
+      <input id="console-input" autocomplete="off" autocapitalize="off"
+             spellcheck="false" placeholder="help" />
+    </div>
+  </div>
 
   <main>
     <section class="graph-panel brackets">

@@ -64,6 +64,8 @@ class Mysterium(Module):
         try:
             while self.conscience.lifecycle.alive:
                 await asyncio.sleep(self.period)
+                if not self.enabled:
+                    continue
                 self.pressure *= self.decay
                 self.state["pressure"] = round(self.pressure, 3)
         except asyncio.CancelledError:

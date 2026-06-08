@@ -940,6 +940,91 @@
     renderStats();
   }
 
+  // ---- console terminal ----------------------------------------------
+
+  function attachConsole() {
+    const toggle = document.getElementById("console-toggle");
+    const panel  = document.getElementById("console-panel");
+    const closeB = document.getElementById("console-close");
+    const out    = document.getElementById("console-out");
+    const input  = document.getElementById("console-input");
+    const history = [];
+    let hpos = 0;
+
+    const print = (text, cls) => {
+      const d = document.createElement("div");
+      d.className = cls || "c-out";
+      d.textContent = text;
+      out.appendChild(d);
+      out.scrollTop = out.scrollHeight;
+    };
+    const open = () => {
+      panel.removeAttribute("hidden");
+      toggle.classList.add("on");
+      input.focus();
+      if (!out.dataset.greeted) {
+        print("SOLARIS_AI console — type 'help'.");
+        out.dataset.greeted = "1";
+      }
+    };
+    const close = () => {
+      panel.setAttribute("hidden", "");
+      toggle.classList.remove("on");
+    };
+    const toggleOpen = () =>
+      panel.hasAttribute("hidden") ? open() : close();
+
+    async function send(cmd) {
+      print(cmd, "c-cmd");
+      try {
+        const r = await fetch("/command", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cmd }),
+        });
+        const d = await r.json();
+        const text = d.output || "";
+        if (text.charCodeAt(0) === 0) { out.textContent = ""; return; }  // clear sentinel
+        const err = text.startsWith("error") || text.startsWith("unknown")
+          || text.startsWith("usage") || text.startsWith("no ");
+        print(text, err ? "c-err" : "c-out");
+      } catch (e) {
+        print(`error: ${e}`, "c-err");
+      }
+    }
+
+    toggle.addEventListener("click", toggleOpen);
+    closeB.addEventListener("click", close);
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        const cmd = input.value.trim();
+        if (cmd) { history.push(cmd); hpos = history.length; send(cmd); }
+        input.value = "";
+      } else if (e.key === "ArrowUp") {
+        if (history.length) {
+          hpos = Math.max(0, hpos - 1);
+          input.value = history[hpos] || "";
+          e.preventDefault();
+        }
+      } else if (e.key === "ArrowDown") {
+        if (history.length) {
+          hpos = Math.min(history.length, hpos + 1);
+          input.value = history[hpos] || "";
+          e.preventDefault();
+        }
+      } else if (e.key === "Escape") {
+        close();
+      }
+    });
+    // backtick toggles the console from anywhere (not while typing).
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "`" && !e.target.matches("input, textarea")) {
+        e.preventDefault();
+        toggleOpen();
+      }
+    });
+  }
+
   function attachControls() {
     vitalAge     = document.getElementById("vital-age");
     vitalAlive   = document.getElementById("vital-alive");
@@ -1020,6 +1105,7 @@
     topology = await resp.json();
     attachControls();
     attachStats();
+    attachConsole();
     buildGraph();
     attachZoom();
     buildStateCards();

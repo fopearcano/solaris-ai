@@ -69,6 +69,8 @@ class Synthesis(Module):
         try:
             while self.conscience.lifecycle.alive:
                 await asyncio.sleep(self.period)
+                if not self.enabled:
+                    continue
                 threshold = self.prune_threshold * (
                     1 + self.conscience.mysterium.pressure
                 )

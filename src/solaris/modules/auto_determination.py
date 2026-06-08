@@ -60,6 +60,8 @@ class AutoDetermination(Module):
         try:
             while self.conscience.lifecycle.alive:
                 await asyncio.sleep(self.period)
+                if not self.enabled:
+                    continue
                 self.state["ticks"] += 1
                 self.state["being"] = round(self.being, 3)
                 # Quiescence-breaker: if we are at the midpoint,

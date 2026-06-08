@@ -221,6 +221,102 @@ body {
 }
 .stats-menu input { accent-color: var(--red); margin: 0; }
 
+.console-btn {
+  background: rgba(30,8,6,0.7);
+  border: 1px solid var(--line-lit);
+  color: var(--amber);
+  height: 22px;
+  padding: 0 8px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+.console-btn:hover,
+.console-btn.on {
+  background: var(--red-deep);
+  color: var(--amber);
+  border-color: var(--red);
+  box-shadow: 0 0 8px rgba(255,35,22,0.4);
+}
+
+/* ---- console terminal panel ------------------------------------- */
+
+.console-panel {
+  position: fixed;
+  top: 46px;
+  right: 12px;
+  z-index: 60;
+  width: 520px;
+  max-width: calc(100vw - 24px);
+  height: 380px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(6,4,4,0.97);
+  border: 1px solid var(--red);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.8), 0 0 18px rgba(255,35,22,0.15);
+}
+.console-panel[hidden] { display: none; }
+.console-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--line-lit);
+  background: linear-gradient(180deg, rgba(40,8,6,0.7), rgba(4,5,6,0));
+}
+.console-title {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--red);
+  text-shadow: 0 0 6px rgba(255,35,22,0.35);
+}
+.console-hint { font-size: 10px; color: var(--txt-mute); letter-spacing: 0.06em; }
+.console-hint b { color: var(--amber-dim); font-weight: 400; }
+.console-head button {
+  margin-left: auto;
+  background: none;
+  border: 1px solid var(--line-lit);
+  color: var(--red-dim);
+  width: 20px; height: 20px;
+  padding: 0; cursor: pointer; font-size: 11px;
+}
+.console-head button:hover { background: var(--red); color: var(--ink); }
+
+.console-out {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 8px 11px;
+  font-size: 11.5px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.console-out .c-cmd { color: var(--amber); }
+.console-out .c-cmd::before { content: "> "; color: var(--red-dim); }
+.console-out .c-out { color: var(--txt-dim); }
+.console-out .c-err { color: var(--rose); }
+
+.console-inputline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 11px;
+  border-top: 1px solid var(--line-lit);
+  background: rgba(20,8,8,0.5);
+}
+.console-prompt { color: var(--red); font-weight: 700; }
+.console-inputline input {
+  flex: 1 1 auto;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--amber);
+  font-family: inherit;
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
+}
+
 .hud-time {
   font-size: 12px;
   letter-spacing: 0.28em;

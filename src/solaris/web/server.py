@@ -44,6 +44,7 @@ from solaris.runtime.signals import (
     Signal,
     Stimulus,
 )
+from solaris.web.console import Console
 from solaris.web.resources import ResourceMonitor
 from solaris.web.topology import TOPOLOGY
 
@@ -108,6 +109,7 @@ class HttpServer:
         self._resource_task: asyncio.Task | None = None
         self.monitor = ResourceMonitor()
         self.resources: dict = {}
+        self.console = Console(self)
 
     async def start(self) -> None:
         self.conscience.bus.subscribe_all(self._broadcast)
@@ -251,6 +253,8 @@ class HttpServer:
             await self._handle_reborn(writer)
         elif method == "POST" and path == "/negate":
             await self._handle_negate(body, writer)
+        elif method == "POST" and path == "/command":
+            await self._handle_command(body, writer)
         else:
             self._send(writer, 404, "text/plain", b"not found")
             await writer.drain()
@@ -367,13 +371,27 @@ class HttpServer:
         self._send(writer, 200, "application/json", b'{"ok":true}')
         await writer.drain()
 
+    async def _do_reborn(self) -> None:
+        """Rebirth + re-attach the broadcast (Bus is replaced)."""
+        await self.conscience.reborn()
+        self.conscience.bus.subscribe_all(self._broadcast)
+
     async def _handle_reborn(self, writer: asyncio.StreamWriter) -> None:
         # Respond first; rebirth replaces the Bus, so re-attach our
         # broadcast subscription to the new one afterwards.
         self._send(writer, 200, "application/json", b'{"ok":true}')
         await writer.drain()
-        await self.conscience.reborn()
-        self.conscience.bus.subscribe_all(self._broadcast)
+        await self._do_reborn()
+
+    async def _handle_command(self, body: bytes, writer: asyncio.StreamWriter) -> None:
+        try:
+            data = json.loads(body) if body else {}
+        except json.JSONDecodeError:
+            data = {}
+        output = await self.console.run(str(data.get("cmd", "")))
+        self._send(writer, 200, "application/json",
+                   json.dumps({"ok": True, "output": output}).encode())
+        await writer.drain()
 
     async def _handle_negate(self, body: bytes, writer: asyncio.StreamWriter) -> None:
         try:

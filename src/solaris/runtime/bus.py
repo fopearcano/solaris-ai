@@ -51,6 +51,11 @@ class Bus:
                 self._trace = self._trace[-self._trace_capacity :]
         handlers = list(self._subscribers.get(type(signal), []))
         handlers.extend(self._wildcard)
+        # Skip handlers owned by a paused module (Console pause/resume).
+        handlers = [
+            h for h in handlers
+            if getattr(getattr(h, "__self__", None), "enabled", True)
+        ]
         await asyncio.gather(
             *(self._safely(h, signal) for h in handlers),
         )

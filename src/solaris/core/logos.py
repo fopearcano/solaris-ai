@@ -78,6 +78,8 @@ class Logos(Module):
         try:
             while self.conscience.lifecycle.alive:
                 await asyncio.sleep(self.period)
+                if not self.enabled:
+                    continue
                 self.division *= self.decay
                 self.union *= self.decay
                 tension = LogosTension(

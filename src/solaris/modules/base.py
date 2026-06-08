@@ -29,6 +29,9 @@ class Module:
         self.conscience = conscience
         self.bus: "Bus" = conscience.bus
         self.state: dict[str, Any] = {}
+        # When False the module is paused: the Bus skips its handlers
+        # and its background loops idle. Toggled by the Console.
+        self.enabled: bool = True
 
     async def start(self) -> None:
         """Register subscriptions and start any background tasks."""
