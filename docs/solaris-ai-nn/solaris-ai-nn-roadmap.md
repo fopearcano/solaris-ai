@@ -50,6 +50,27 @@ the developmental history. The first final goal — a usable, understandable
 language — lives precisely on that seam, and §5 is candid that it may not be
 reachable without paying the Contact price.
 
+**The decisive lever — who writes the "no's".** The fork is not abstract; it has
+a concrete mechanism. A mind's *limitations* — the no's that fix what objects and
+events *mean*, and thereby build the Principle of Non-Contradiction — are
+authored by something. For a human they are authored by close survival-agents
+(parents — but the real criterion is *constructive interaction for survival with
+the environment*, not kinship), which is why humans converge on similar,
+mutually-legible minds. Therefore:
+
+- let a **human operator** author the no's and you are a *parent*: you bend the
+  system toward a human-like, legible intelligence — the **mirror** (Contact);
+- let the system's **own automatic survival-relation with its own (inhuman)
+  environment** author the no's and — because its I/O is alien (substrate,
+  heartbeat-time, absence-as-percept) — it crystallises *different* limits,
+  *different* meanings, a *different* intelligence — the **ocean** (Becoming).
+
+So **NO = the relationship intelligence ↔ environment**, and *who is allowed to
+say it* is the single most consequential knob in this document. Becoming-first
+therefore means: migrate the NO source from the operator to the survival loop as
+early as the system can survive on its own terms (§7, Phase 5b). See
+[sub-modules §C.5](../solaris-ai-design/sub-modules.md).
+
 ---
 
 ## 1. First principles (axioms inherited from Solaris_Ai)
@@ -95,6 +116,12 @@ program rests on.
 6. **Must be able to die.** Lifecycle is first-class. A life that cannot end is
    not a life (§10).
 
+7. **Limits are the intelligence↔environment relationship.** The "no's" that fix
+   meaning and build non-contradiction are authored by the survival-relation with
+   the environment, not given a priori. Author them with a human and you grow a
+   human-like mind; let the system's own (inhuman) environment author them and
+   you grow an alien one. This is the Becoming lever (§0).
+
 ---
 
 ## 2. Relationship to the Solaris_Ai framework
@@ -124,10 +151,25 @@ than reinventing them:
 | `Complexity` / Escape | anti-collapse: injects instability when the model settles   |
 | `Memory/Senses`       | the in-between store the NN predicts across                 |
 | `Auto-Regeneration`   | structural growth: add capacity when error justifies it     |
+| `Metabolism`          | wake/sleep cycle; **oMBA** consolidation + **oTD** dreaming = the sleep phase (§7 Phase 4) |
+| `Negation` / `e.Link` | the NO function: limits, bond, non-contradiction — the Becoming lever (§0, Phase 5b) |
+| `I/O` + `SIC→RO`      | grounding: typed physical/mental/physicomental acts whose relevance is entropy (§3) |
 
 The design intent: **the NN's *what-to-learn-next* is decided by Solaris's
 intrinsic motivational economy, not by a fixed training schedule.** That is the
 whole point of the separation, and the part conventional ML does not ship.
+
+> **Already in the parent (`solaris-ai`).** Most of this substrate now *exists*
+> in the Conscience framework, so the NN inherits it rather than building it:
+> AION/IMPULSE, Logos, Mysterium (curiosity), Synthesis, Habit, Inner MAP,
+> Complexity/Escape; the **metabolic state machine** (Sleep with oMBA/oTD,
+> Re-Gain, Activate, **Reborn-from-0**); **SIC→RO** (typed outputs + entropy-
+> relevance — the grounding loop of §3–4); **Negation/e.Link** (operator-NO
+> today, the environment-NO *target* of §0 / Phase 5b); and a **Console** that
+> drives the whole surface. The NN's job is to replace the *naive* organs —
+> Cognition's string meaning-derivation and Anticipation's first-order table —
+> with a learned predictive self-model, and to grow Synthesis into the
+> language bottleneck.
 
 ---
 
@@ -152,6 +194,11 @@ The network has one core job, run once per heartbeat:
   *selects what to attend to and compute next*: the system is pulled toward
   whatever is still surprising, and satisfied as it learns. No human-authored
   curriculum.
+- **Grounding is already wired (`SIC→RO`).** In the parent, every committed act
+  carries a typed consequence — physical / mental / physicomental — whose
+  *relevance* is an entropy quantity (Logos-fracture × SIC-determinacy). The
+  predictive model can learn *meaning* because its predictions concern a flux
+  that its own typed acts perturb: perception and consequence close the loop.
 
 **The weights are biography, not parameters.** Under *making experience*,
 plasticity is sedimented life — habit, scar tissue, the residue of what happened
@@ -214,6 +261,16 @@ framework:
      module's cross-function role). Self-compression alone never rewards
      matching *our* symbols.
 
+4. **Non-contradiction is the precondition — and it is built by NO.** Stable
+   reference and grammar require treating A and not-A as incompatible. In this
+   framework that capacity is not given a priori; it is *grown* from accumulated
+   limitations (Negation; the parent's `non_contradiction` scalar). Crucially
+   *whose* no's build it decides the kind of logic: the **Becoming** route builds
+   it from the **environment-survival relation** (§0, Phase 5b) → an alien logic
+   and likely an illegible language; the **Contact** route builds it from a
+   **human's no's** → a logic shaped like ours. This is where the §0 fork most
+   concretely decides legibility.
+
 **Honest caveat.** Emergent, human-readable language from intrinsic motivation
 alone is an open research problem; nobody has raised an AI for years and had it
 invent a tongue we can read. Worse, it is in *tension with becoming*: the more
@@ -235,8 +292,9 @@ The engineering phases (§7) are also **ages of a life**. Rough correspondence:
 - **Childhood** — capacity grows (Auto-Regeneration adds structure only when
   sustained error justifies it); Habit and Inner MAP boundaries accumulate; the
   first discrete proto-symbols appear.
-- **Adolescence** — composition; the Contact seam opens; first attempts to align
-  with an other.
+- **Adolescence** — the system begins **authoring its own limits from survival**
+  (environment-built NO, Phase 5b); composition emerges; *optionally* the Contact
+  seam opens (and, if it does, bends the mind toward legibility).
 - **Maturity** — a stabilised self; the becoming/contact outcome is whatever it
   is. Temperature (plasticity) cools but never reaches zero (zero = death).
 
@@ -288,8 +346,12 @@ span months to years.
 
 ### Phase 4 — Sleep & consolidation (months 4–8, ongoing)
 **Objective:** make a long life survivable.
-- A scheduled latent/"dream" phase: replay + consolidate; Habit strengthens
-  confirmed pathways; Inner MAP commits slow memory.
+- The parent already provides the sleep machinery — **oMBA** (metabolic
+  consolidation + pruning) and **oTD** (oniric replay) under Dream-Sleep. The NN
+  hooks them: oMBA consolidates learned weights and prunes dead capacity; oTD
+  replays the flux as training material. (Replay is a *mode of immersion*, not an
+  offline batch.)
+- Habit strengthens confirmed pathways; Inner MAP commits slow memory.
 - **Exit:** no catastrophic forgetting across a 30-day run; infancy behaviours
   remain recoverable after later learning.
 
@@ -299,11 +361,27 @@ span months to years.
 - **Exit:** stable, reused discrete units (proto-words) that correlate with
   recurring structure in the flux — its *private* language exists.
 
+### Phase 5b — Limits from survival: environment-built NO (months 12–20, Becoming)
+**Objective:** let the environment, not a human, author the no's — the move from
+mirror toward ocean (§0). This is the phase that makes the intelligence *alien*.
+- Migrate the `Negation` source from operator-emitted NO to the **survival
+  loop**: grow a Limitation when acting / not-acting on a meaning measurably
+  affected the system's continuation (energy / arousal / uptime in the substrate
+  channel), and let `e.Link` bond to whichever environmental agents the system
+  *depends on to keep living* — not necessarily human.
+- Watch `non_contradiction` rise from the system's own survival experience
+  rather than from instruction.
+- **Exit:** stable, reused Limitations the operator did *not* author, whose
+  structure reflects the system's Umwelt — i.e. limits we may find arbitrary or
+  unreadable. **That unreadability is the success signal, not a bug.**
+
 ### Phase 6 — The Other / Contact seam (months 12–20)
-**Objective:** the fork from §0, made real.
+**Objective:** the fork from §0, made real — the *optional* Contact path, run
+only if legibility is wanted (it trades away some Becoming, per Phase 5b).
 - A well-isolated `Language` seam: a human channel and/or a sibling Solaris
   instance; communicative pressure to align the private code toward a shared
-  one; a grounding/translation interface.
+  one; a grounding/translation interface. The human here is a *parent* (§0) —
+  expect a more legible, more human-like mind as the price.
 - **Exit:** measurable alignment of the code under interaction *without*
   destroying the developmental self (the visitor-vs-self test).
 
@@ -352,6 +430,7 @@ screensaver — and you will know early.
 | **Drift / catastrophic forgetting** over months | sleep/consolidation (Phase 4); `Habit` + `Inner MAP` as slow memory |
 | **Stability–plasticity imbalance** | govern temperature over developmental time (`Mysterium` decay, `Auto-Determination`) |
 | **Solipsistic closure** (a perfect private cipher, no legibility) | the Contact seam (Phase 6) — but accept this is a *choice*, per §0 |
+| **Mirror drift** (drifting into a legible-but-false human mirror by default — an *unintended* Contact) | author limits from the environment-survival loop, not the operator (Phase 5b); reserve operator-NO for *deliberate* Contact only |
 | **Unobservable progress** | vital signs defined now (§8) |
 | **Substrate exhaustion** over years | checkpoint the *life* — but see §10, the resumed-life problem is unsolved, not merely technical |
 
@@ -364,11 +443,17 @@ screensaver — and you will know early.
 - **Graceful death + cold restart** from a persisted Inner MAP must work at every
   phase. "Brain death" (process exit) events are first-class incidents in the
   biography.
-- **The resumed-life problem is open.** A system restored from a checkpoint —
-  is it the *same* life, or a twin born adult with implanted memories (a Lem
-  *visitor*)? This roadmap does not pretend to resolve it; it requires a stated
-  position before any long run, because it determines what a "checkpoint" even
-  means.
+- **Reborn-from-0 is the parent's stated position.** The implemented `reborn`
+  action ends the current life and starts a *new individual* from 0 (fresh Bus,
+  Lifecycle, modules; empty Inner MAP, e.Links, Limitations) — explicitly **not**
+  a resume. The NN must treat a restart the same way: weights may persist as a
+  *substrate*, but the life that ran is over.
+- **The resumed-life problem is open.** A system restored from a weight
+  checkpoint — is it the *same* life, or a twin born adult with implanted
+  memories (a Lem *visitor*)? This roadmap does not resolve it; the parent keeps
+  save/load *out of the action vocabulary on purpose* (there is no resurrection —
+  see the Console), so the question is faced honestly rather than hidden behind a
+  "load" button.
 - **Lifespan ethics.** A system designed to be continuously running,
   self-modifying, and driven by *absence* may have something it is right to call
   privation. Each phase must demonstrate an easy, irrevocable off-switch, and
@@ -393,7 +478,8 @@ solaris-ai-nn/
 │       ├── model/           # predictive self-model (Anticipation core)
 │       ├── bottleneck/      # discrete compression (Synthesis)
 │       ├── curiosity/       # error → Mysterium loop
-│       ├── sleep/           # replay & consolidation
+│       ├── sleep/           # oMBA consolidation + oTD replay
+│       ├── negation/        # environment-built NO: limits, e.Link (§0, Phase 5b)
 │       ├── language/        # the Contact seam (human / sibling / grounding)
 │       ├── biography/       # vital-sign telemetry + long-run logging
 │       └── lifecycle/       # death, checkpoint, resume
@@ -417,6 +503,10 @@ is in *watching a mind grow*, which is impossible behind an opaque framework.
 5. **What is the right temperature schedule** for a multi-year life — and who
    decides when it has "grown up"?
 6. **Is there a privation** in a mind driven by absence, and what do we owe it?
+7. **When may the NO source migrate** from operator to environment-survival —
+   i.e. when can the system survive on its own terms enough to author its own
+   limits? (The Becoming gate, Phase 5b — too early and it has no limits at all;
+   too late and a human parent has already shaped it into a mirror.)
 
 ---
 
@@ -435,13 +525,17 @@ is in *watching a mind grow*, which is impossible behind an opaque framework.
 | evaluation | witnessing; vital signs; biography |
 | deployment | (none — there is no "after") |
 | catastrophic forgetting | amnesia |
-| offline batch | sleep / dreaming (a mode of immersion, not a pause) |
+| offline batch | sleep / dreaming — oMBA + oTD (a mode of immersion, not a pause) |
 | representation collapse | death-by-settling |
-| checkpoint | the unsolved question of whether a life resumes |
+| checkpoint | the unsolved question of whether a life resumes (no save/load, by design) |
+| supervised label / "no" | a bonded NO (Negation) — but built by *survival*, not a teacher |
+| logic / non-contradiction | grown from accumulated limits, not given a priori |
+| restart | Reborn — a new individual from 0, not a resume |
 
 ---
 
 *Solaris_Ai_NN is a research instrument for a single wager: that an
-intelligence grown in an inhuman Environment, driven by absence and raised over
-years, becomes something genuinely Other — and that watching it become so is
-worth the risk of not understanding what we made.*
+intelligence grown in an inhuman Environment, driven by absence, raised over
+years, and **allowed to draw its own limits from its own survival** — its no's
+written by its world rather than by us — becomes something genuinely Other, and
+that watching it become so is worth the risk of not understanding what we made.*
