@@ -94,6 +94,8 @@ from solaris.modules.memory_senses import MemorySenses
 from solaris.modules.metabolism import Metabolism
 from solaris.modules.mysterium import Mysterium
 from solaris.modules.negation import Negation
+from solaris.modules.parallelisation import Parallelisation
+from solaris.modules.safety import Safety
 from solaris.modules.synthesis import Synthesis
 from solaris.modules.uncertainty import Uncertainty
 from solaris.runtime import Bus, Lifecycle
@@ -135,6 +137,8 @@ class Conscience:
         self.complexity = Complexity(self)
         self.anticipation = Anticipation(self)
         self.metabolism = Metabolism(self)
+        self.safety = Safety(self)
+        self.parallelisation = Parallelisation(self)
         self.language = Language(self)
 
         self._modules = [
@@ -157,6 +161,8 @@ class Conscience:
             self.complexity,
             self.anticipation,
             self.metabolism,
+            self.safety,
+            self.parallelisation,
             self.language,
         ]
 
@@ -192,6 +198,8 @@ class Conscience:
                 await self.metabolism.activate(reason="threat")
             else:
                 return  # gated: dreaming, not perceiving the outside
+        # Safety shield: the parent dampens harmful stimuli (Mod-1).
+        intensity = self.safety.filter(modality, intensity)
         self.metabolism.bump_arousal(0.18 * intensity + 0.05)
         if modality == "threat" and not self.metabolism.activated:
             await self.metabolism.activate(reason="threat")

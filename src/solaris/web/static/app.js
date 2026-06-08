@@ -83,7 +83,7 @@
 
   let svg, viewport, traceList, stateEl;
   let vitalAge, vitalAlive, vitalCount, vitalEvents, vitalSync, timecodeEl;
-  let vitalMode, vitalArousal;
+  let vitalMode, vitalArousal, vitalVitality;
   let zoomLevelEl;
   let eventCount = 0;
   let bornAt = performance.now();
@@ -776,6 +776,8 @@
         ? "mode-activate"
         : (meta.state === "dream_sleep" ? "mode-sleep" : "mode-awake");
       if (vitalArousal) vitalArousal.textContent = (meta.arousal ?? 0).toFixed(2);
+      const vit = snap.modules && snap.modules.safety ? snap.modules.safety.vitality : null;
+      if (vit != null && vitalVitality) vitalVitality.textContent = Number(vit).toFixed(2);
     }
     if (snap.modules) {
       vitalCount.textContent = `${Object.keys(snap.modules).length}`;
@@ -1034,6 +1036,7 @@
     vitalSync    = document.getElementById("vital-sync");
     vitalMode    = document.getElementById("vital-mode");
     vitalArousal = document.getElementById("vital-arousal");
+    vitalVitality = document.getElementById("vital-vitality");
     timecodeEl   = document.getElementById("timecode");
     traceList    = document.getElementById("trace-log");
 

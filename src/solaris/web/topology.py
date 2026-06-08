@@ -44,6 +44,8 @@ MODULES: list[dict] = [
 
     {"id": "metabolism",             "row": 0,  "col": 6, "role": "decision",   "label": "Metabolism"},
     {"id": "negation",               "row": 2,  "col": 6, "role": "self",       "label": "Negation"},
+    {"id": "parallelisation",        "row": 1,  "col": 0, "role": "perception", "label": "Parallel"},
+    {"id": "safety",                 "row": 4,  "col": 0, "role": "self",       "label": "Safety"},
 
     {"id": "io_module",              "row": 2,  "col": 1, "role": "decision",   "label": "I/O"},
     {"id": "uncertainty",            "row": 2,  "col": 2, "role": "decision",   "label": "Uncertainty"},
@@ -162,6 +164,16 @@ EDGES: list[dict] = [
     {"from": "negation",    "to": "inner_map",            "via": "MapUpdate"},
     {"from": "negation",    "to": "dimensional_comparison", "via": "MapUpdate"},
     {"from": "negation",    "to": "language",            "via": "MapUpdate"},
+
+    # Safety — environmental harm depletes vitality; shield/intervene (Mod-1)
+    {"from": "environment", "to": "safety",     "via": "Stimulus"},
+    {"from": "safety",      "to": "inner_map",  "via": "MapUpdate"},
+    {"from": "safety",      "to": "language",   "via": "MapUpdate"},
+
+    # Parallelisation — forks from Logos opposition, merges (Mod-2)
+    {"from": "logos",           "to": "parallelisation", "via": "LogosTension"},
+    {"from": "parallelisation", "to": "inner_map",       "via": "MapUpdate"},
+    {"from": "parallelisation", "to": "language",        "via": "MapUpdate"},
 ]
 
 
