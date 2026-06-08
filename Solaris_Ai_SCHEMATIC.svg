@@ -29,12 +29,12 @@
 <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8794a3" /></marker>
 <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ff6b6b" /></marker>
 <marker id="arrow-ffb14d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ffb14d" /></marker>
-<marker id="arrow-7cf088" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7cf088" /></marker>
-<marker id="arrow-62b6ff" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#62b6ff" /></marker>
-<marker id="arrow-c884ff" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#c884ff" /></marker>
-<marker id="arrow-7df0ff" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7df0ff" /></marker>
-<marker id="arrow-ff8888" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ff8888" /></marker>
 <marker id="arrow-ff5d5d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ff5d5d" /></marker>
+<marker id="arrow-62b6ff" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#62b6ff" /></marker>
+<marker id="arrow-7cf088" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7cf088" /></marker>
+<marker id="arrow-c884ff" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#c884ff" /></marker>
+<marker id="arrow-ff8888" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ff8888" /></marker>
+<marker id="arrow-7df0ff" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7df0ff" /></marker>
 </defs>
 <rect width="1400" height="2870" fill="#0a0d12" />
 <rect x="0" y="0" width="1400" height="220" fill="#0a0d12" />
@@ -151,6 +151,7 @@
 <line x1="570" y1="1350" x2="1180" y2="1500" stroke="#ff6b6b" stroke-width="0.7" opacity="0.11" stroke-dasharray="1 5" />
 <line x1="570" y1="1350" x2="1010" y2="1350" stroke="#ff6b6b" stroke-width="0.7" opacity="0.11" stroke-dasharray="1 5" />
 <line x1="570" y1="1350" x2="180" y2="1600" stroke="#ff6b6b" stroke-width="0.7" opacity="0.11" stroke-dasharray="1 5" />
+<line x1="570" y1="1350" x2="420" y2="1500" stroke="#ff6b6b" stroke-width="0.7" opacity="0.11" stroke-dasharray="1 5" />
 <line x1="570" y1="1350" x2="700" y2="1500" stroke="#ff6b6b" stroke-width="0.7" opacity="0.11" stroke-dasharray="1 5" />
 <line x1="570" y1="1350" x2="560" y2="1500" stroke="#ff6b6b" stroke-width="0.7" opacity="0.11" stroke-dasharray="1 5" />
 <line x1="570" y1="1350" x2="840" y2="1500" stroke="#ff6b6b" stroke-width="0.7" opacity="0.11" stroke-dasharray="1 5" />
@@ -235,6 +236,11 @@
 <path d="M 830 1350 Q 920.0 1368.0 1010 1350" stroke="#d0d6dd" class="edge-faint" />
 <path d="M 1010 1350 Q 599.0 1237.5 180 1160" stroke="#c884ff" class="edge-faint" />
 <path d="M 1010 1350 Q 957.6 1480.5 940 1620" stroke="#c884ff" class="edge-faint" />
+<path d="M 700 1500 Q 560.0 1482.0 420 1500" stroke="#7cf088" class="edge-faint" />
+<path d="M 420 1500 Q 630.0 1518.0 840 1500" stroke="#ff85aa" class="edge-faint" />
+<path d="M 420 1500 Q 412.2 1563.0 440 1620" stroke="#ff85aa" class="edge-faint" />
+<path d="M 420 1500 Q 800.0 1518.0 1180 1500" stroke="#ff85aa" class="edge-faint" />
+<path d="M 420 1500 Q 676.0 1577.5 940 1620" stroke="#ff85aa" class="edge-faint" />
 <path d="M 700 970 Q 690.0 1025.0 700 1080" fill="none" stroke="#ffb14d" stroke-width="3" opacity="0.95" stroke-dasharray="6 4" marker-end="url(#arrow-ffb14d)" />
 <text x="686.0" y="1025.0" text-anchor="middle" class="flow-label" fill="#ffb14d">sensory channel</text>
 <path d="M 700 1080 Q 690.0 1145.0 700 1210" fill="none" stroke="#7df0ff" stroke-width="3" opacity="0.95" marker-end="url(#arrow-7df0ff)" />
@@ -284,6 +290,9 @@
 <rect x="148" y="1568" width="64" height="64" rx="6" fill="#ffb14d" class="node-shape" />
 <text x="180" y="1604" text-anchor="middle" class="label">Safety</text>
 <text x="180" y="1650" text-anchor="middle" class="desc">protects from env. death</text>
+<polygon transform="translate(420,1500)" points="0,-38 38,0 0,38 -38,0" fill="#7cf088" class="node-shape" />
+<text x="420" y="1504" text-anchor="middle" class="label">Instinct</text>
+<text x="420" y="1558" text-anchor="middle" class="desc">reflex React, sublimated</text>
 <polygon transform="translate(700,1500)" points="0,-46 46,0 0,46 -46,0" fill="#7cf088" class="node-shape" />
 <text x="700" y="1504" text-anchor="middle" class="label">I/O</text>
 <text x="700" y="1558" text-anchor="middle" class="desc">links meaning + push</text>

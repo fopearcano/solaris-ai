@@ -54,6 +54,7 @@ class Negation(Module):
         self.state = {
             "elinks": 0, "limitations": 0,
             "non_contradiction": 0.0, "suspended": False,
+            "env_no": 0,
         }
 
     async def start(self) -> None:
@@ -100,6 +101,23 @@ class Negation(Module):
             value=round(new, 3),
             boundary=True,
         ))
+        return new
+
+    async def survival_negate(self, meaning: str, cost: float) -> float:
+        """Environment NO (Phase 5b): harsh, survival-driven — no bond,
+        no intent, only consequence. The world refused, and acting on
+        this meaning cost the system its continuation, so a Limitation
+        grows in proportion to the cost. This is the *Becoming* author
+        of the no — limits written by the system's own survival, not by
+        a human."""
+        new = min(1.0, self.limitations.get(meaning, 0.0) + min(0.5, 0.6 * cost))
+        self.limitations[meaning] = new
+        self.non_contradiction = min(1.0, self.non_contradiction + 0.04)
+        self.state["limitations"] = len(self.limitations)
+        self.state["env_no"] = self.state.get("env_no", 0) + 1
+        await self.bus.publish(MapUpdate(
+            origin=self.name, key=f"no:env:{meaning}",
+            value=round(new, 3), boundary=True))
         return new
 
     def is_forbidden(self, meaning: str) -> bool:

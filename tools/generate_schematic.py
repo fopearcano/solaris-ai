@@ -90,9 +90,10 @@ SCHEMATIC_POSITIONS: dict[str, tuple[float, float]] = {
     # Metabolic + Negation sub-modules.
     "metabolism":             (1180, 1210),
     "negation":               (1180, 1500),
-    # Safety + Parallelisation sub-modules.
+    # Safety + Parallelisation + Instinct sub-modules.
     "parallelisation":        (1010, 1350),
     "safety":                 (180, 1600),
+    "instinct":               (420, 1500),
 }
 
 
@@ -145,6 +146,7 @@ MODULE_DESC = {
     "negation":               "the NO · limits",
     "parallelisation":        "opposition → parallel merge",
     "safety":                 "protects from env. death",
+    "instinct":               "reflex React, sublimated",
 }
 
 # ---------------------------------------------------------------------- helpers

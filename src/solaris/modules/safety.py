@@ -28,7 +28,7 @@ from __future__ import annotations
 import asyncio
 
 from solaris.modules.base import Module
-from solaris.runtime.signals import MapUpdate, Stimulus
+from solaris.runtime.signals import MapUpdate, MeaningEvent, Stimulus
 
 HARMFUL_MODALITIES = {"threat"}
 
@@ -53,6 +53,7 @@ class Safety(Module):
         self.protection_enabled = True   # the parent protects (default)
         self.shielded = False
         self._recovering = False
+        self._last_meaning: str | None = None
         self._task: asyncio.Task | None = None
         self.state = {
             "vitality": 1.0, "shielded": False,
@@ -61,7 +62,11 @@ class Safety(Module):
 
     async def start(self) -> None:
         self.bus.subscribe(Stimulus, self._on_stimulus)
+        self.bus.subscribe(MeaningEvent, self._on_meaning)
         self._task = asyncio.create_task(self._tick())
+
+    async def _on_meaning(self, sig: MeaningEvent) -> None:
+        self._last_meaning = sig.meaning
 
     async def stop(self) -> None:
         if self._task is not None:
@@ -85,6 +90,11 @@ class Safety(Module):
         if harmful:
             dmg = 0.18 * sig.intensity if sig.modality in HARMFUL_MODALITIES else 0.06
             self.vitality = max(0.0, self.vitality - dmg)
+            # Environment-built NO (Phase 5b): the world hurt the system
+            # while this meaning was active — so the survival relation
+            # writes a harsh Limitation on it (no bond, only consequence).
+            if self._last_meaning and dmg >= 0.05:
+                await self.conscience.negation.survival_negate(self._last_meaning, dmg)
 
     async def _tick(self) -> None:
         try:

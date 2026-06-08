@@ -88,6 +88,7 @@ from solaris.modules.dimensional_comparison import DimensionalComparison
 from solaris.modules.ego import Ego
 from solaris.modules.habit import Habit
 from solaris.modules.inner_map import InnerMap
+from solaris.modules.instinct import Instinct
 from solaris.modules.io_module import IOModule
 from solaris.modules.language import Language
 from solaris.modules.memory_senses import MemorySenses
@@ -139,6 +140,7 @@ class Conscience:
         self.metabolism = Metabolism(self)
         self.safety = Safety(self)
         self.parallelisation = Parallelisation(self)
+        self.instinct = Instinct(self)
         self.language = Language(self)
 
         self._modules = [
@@ -163,6 +165,7 @@ class Conscience:
             self.metabolism,
             self.safety,
             self.parallelisation,
+            self.instinct,
             self.language,
         ]
 

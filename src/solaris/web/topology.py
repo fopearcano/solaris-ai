@@ -46,6 +46,7 @@ MODULES: list[dict] = [
     {"id": "negation",               "row": 2,  "col": 6, "role": "self",       "label": "Negation"},
     {"id": "parallelisation",        "row": 1,  "col": 0, "role": "perception", "label": "Parallel"},
     {"id": "safety",                 "row": 4,  "col": 0, "role": "self",       "label": "Safety"},
+    {"id": "instinct",               "row": 2,  "col": 0, "role": "decision",   "label": "Instinct"},
 
     {"id": "io_module",              "row": 2,  "col": 1, "role": "decision",   "label": "I/O"},
     {"id": "uncertainty",            "row": 2,  "col": 2, "role": "decision",   "label": "Uncertainty"},
@@ -174,6 +175,13 @@ EDGES: list[dict] = [
     {"from": "logos",           "to": "parallelisation", "via": "LogosTension"},
     {"from": "parallelisation", "to": "inner_map",       "via": "MapUpdate"},
     {"from": "parallelisation", "to": "language",        "via": "MapUpdate"},
+
+    # Instinct — reflex Reaction to every Action, sublimated by Logic
+    {"from": "io_module", "to": "instinct",        "via": "Action"},
+    {"from": "instinct",  "to": "habit",           "via": "Reaction"},
+    {"from": "instinct",  "to": "backpropagation", "via": "Reaction"},
+    {"from": "instinct",  "to": "negation",        "via": "Reaction"},
+    {"from": "instinct",  "to": "language",        "via": "Reaction"},
 ]
 
 
