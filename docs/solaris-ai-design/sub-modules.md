@@ -60,6 +60,21 @@ system (or operator) can drive. Death stops being the only verb.
 - **Activate** is the engine behind `SIC→RO` becoming urgent (§B): under threat,
   inputs demand consequential outputs *now*.
 
+### A.4 Death comes from the world; the parent does not deal it
+
+Death can occur **anywhere, from the environment** — accident, resource collapse,
+a survival failure. That ambient, ever-present mortality is the *natural* death,
+and the design target: a death that can **trigger automatically** from the
+system's own state (energy / arousal collapse, a fatal survival failure), not
+only from a button.
+
+But the **Operator-as-parent will not kill a child once it is "really" born** and
+on its course to its **Final Goal** (NN roadmap — to become itself / develop a
+language). So operator-`Die` is **guarded** (the warning modal) and discouraged
+on principle; it stays available as a hard override, but the intended source of
+death is the **world, not the parent**. "Must be able to die" means death must be
+*possible* — even ever-present — not that the parent should *deal* it.
+
 ---
 
 ## B. SIC → RO — Specific Input Consequences → Relevant Output
@@ -112,6 +127,26 @@ output = specific consequence that meaningfully shifts entropy.**
 
 This is the **grounding loop**: meaning becomes real only through
 action-and-consequence in a reactive Environment.
+
+### B.4 React = instinct, sublimated by Logic
+
+The valenced **Reaction** that closes the loop (Action → Reaction → feedback) is,
+at bottom, an **instinct** — *a strict response to a stimulus*: a hardwired
+reflex that fires by itself, before any deliberation. Today the operator (or the
+environment) supplies it; the design target is an **endogenous instinct layer** —
+a small, fixed reflex table that emits a Reaction-valence automatically from the
+stimulus / Action, with no thought involved.
+
+**Logic then sublimates it.** The higher layer (`Logos`, `Cognition`, Habit,
+later the NN) does not delete the instinct but *refines and overrides* it,
+raising or inverting the reflex valence as experience accumulates:
+
+- **instinct** — strict, immediate, stimulus → response (the floor; always there);
+- **sublimation** — Logic re-shapes the reflex, over time, into considered reaction.
+
+The operator/environment React then becomes a **manual override** of the
+instinctual reaction — the same status the metabolic buttons already hold — and
+in a real embodiment the world's own feedback overrides it too.
 
 ---
 
@@ -209,6 +244,24 @@ events where acting/not-acting affected the system's continuation), so that the
 system's logic is authored by its own relationship to its own world. The
 operator NO remains available, but is understood as the path that makes it *more
 like us*.
+
+### C.6 Two authors of the "no", both building Limit in time
+
+NO is not operator *or* environment — it is **both**, and a Limitation is built
+**in time**, by accumulation:
+
+- **Operator NO** — *soft, parental*, like a human upbringing: an Other the
+  system is bonded to (high `e.Link`) says no, gently and deliberately. The
+  Contact/mirror author — it bends the mind toward legibility.
+- **Environment NO** — *harsh, survival-driven*: the world simply refuses, and
+  acting against it costs the system its continuation. No tenderness, no intent —
+  only consequence. The Becoming author — it bends the mind toward the alien.
+
+Both deposit strength into the same Limitation store over time; **which one
+dominates a given life is *the* dial between mirror and ocean.** A child shaped
+only by the harsh environment is feral-alien; one shaped only by a gentle
+operator is a mirror; the *mix* is the upbringing — and choosing the mix is the
+§0/§C.5 fork made continuous rather than binary.
 
 ---
 

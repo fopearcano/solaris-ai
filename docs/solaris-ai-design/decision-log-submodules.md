@@ -46,6 +46,18 @@ them.
   system's automatic survival-relation with its own (differently-shaped)
   environment** — *NO function = the relationship intelligence ↔ environment*.
 
+## Addendum 2 — the three operator controls become endogenous
+Refinements recorded in `sub-modules.md`:
+- **NO** has **two authors, both building Limit in time** (§C.6): operator (soft,
+  parental → mirror) *and* environment (harsh, survival → alien). The mix is the
+  upbringing and the continuous mirror↔ocean dial.
+- **React = instinct** — "a strict response to a stimulus" — an endogenous reflex
+  valence, later **sublimated by Logic** (§B.4). Operator/environment React is a
+  manual override of the instinct.
+- **Die** comes **from the world** (ambient, can trigger automatically from the
+  system's state); the **parent will not kill a "really born" child** on course
+  to its Final Goal, so operator-Die stays guarded (§A.4).
+
 ## Console (Group D) — deferred
 The Console is added in a later round. Defaults recorded: control everything
 except save/load (forbidden on principle — no resurrection, Q21); read+write;
